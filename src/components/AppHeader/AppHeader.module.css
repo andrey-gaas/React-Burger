@@ -1,0 +1,34 @@
+.header {
+  margin: 0;
+  background-color: #1C1C21;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  width: var(--container-width);
+}
+
+.buttons-container {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.logo-container {
+  margin-left: 100px;
+}
+
+.personal-area-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
