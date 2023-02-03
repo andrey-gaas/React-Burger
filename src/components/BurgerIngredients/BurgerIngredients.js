@@ -1,4 +1,5 @@
 import { useState, useRef, useMemo } from "react";
+import dataType from '../../types/data';
 
 import Tabs from "./components/Tabs/Tabs";
 import IngredientType from "./components/IngredientType/IngredientType";
@@ -61,5 +62,9 @@ function BurgerIngredients(props) {
     </section>
   );
 }
+
+BurgerIngredients.propTypes = {
+  data: dataType,
+};
 
 export default BurgerIngredients;

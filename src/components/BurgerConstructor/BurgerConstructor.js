@@ -1,3 +1,5 @@
+import dataType from '../../types/data';
+
 import {
   ConstructorElement,
   DragIcon,
@@ -7,7 +9,7 @@ import {
 
 import styles from "./BurgerConstructor.module.css";
 
-function BurgerConstructor() {
+function BurgerConstructor(props) {
   return (
     <section className={`${styles.container} mt-25`}>
       <ul className={styles.list}>
@@ -82,12 +84,16 @@ function BurgerConstructor() {
           <span className="text text_type_digits-medium mr-2">610</span>
           <CurrencyIcon />
         </div>
-        <Button extraClass='ml-10'>
+        <Button htmlType="button" extraClass='ml-10'>
           Оформить заказ
         </Button>
       </section>
     </section>
   );
 }
+
+BurgerConstructor.propTypes = {
+  data: dataType,
+};
 
 export default BurgerConstructor;
