@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { data } from "../../utils/data";
 
 import AppHeader from "../AppHeader/AppHeader";
@@ -9,10 +7,6 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import styles from "./App.module.css";
 
 function App() {
-  useEffect(() => {
-    document.title = "Stellar Burgers";
-  }, []);
-
   return (
     <>
       <AppHeader />
