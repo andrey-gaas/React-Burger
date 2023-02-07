@@ -1,3 +1,4 @@
+import { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -8,6 +9,22 @@ import styles from './Modal.module.css';
 
 function Modal(props) {
   const { onClose, children, title } = props;
+
+  const close = useCallback(event => {
+    if (event.key === 'Escape') {
+      onClose();
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    document.body.addEventListener('keydown', close);
+
+    return () => {
+      document.body.style.overflow = 'auto';
+      document.body.removeEventListener('keydown', close);
+    }
+  }, [close]);
 
   return createPortal(
     <>
