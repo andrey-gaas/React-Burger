@@ -38,7 +38,7 @@ function IngredientType(props) {
 IngredientType.propTypes = {
   title: PropTypes.string.isRequired,
   elementRef: PropTypes.shape({
-    current: PropTypes.instanceOf(HTMLButtonElement),
+    current: PropTypes.instanceOf(HTMLHeadingElement),
   }).isRequired,
   list: dataType,
 };
