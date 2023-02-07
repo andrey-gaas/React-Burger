@@ -1,0 +1,25 @@
+.modal-container {
+  --width: 720px;
+
+  position: fixed;
+  top: 100px;
+  left: calc(50% - calc(var(--width) / 2));
+  display: flex;
+  flex-direction: column;
+  width: var(--width);
+  background-color: #1C1C21;
+  border-radius: 40px;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
