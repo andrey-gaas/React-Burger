@@ -1,4 +1,6 @@
 import { memo } from "react";
+import PropTypes from 'prop-types';
+import dataType from '../../../../types/data';
 
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -32,5 +34,13 @@ function IngredientType(props) {
     </>
   );
 }
+
+IngredientType.propTypes = {
+  title: PropTypes.string.isRequired,
+  elementRef: PropTypes.shape({
+    current: PropTypes.instanceOf(HTMLButtonElement),
+  }).isRequired,
+  list: dataType,
+};
 
 export default memo(IngredientType);

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./Tabs.module.css";
@@ -31,5 +32,10 @@ function Tabs(props) {
     </div>
   );
 }
+
+Tabs.propTypes = {
+  ingredientType: PropTypes.string.isRequired,
+  setIngredientType: PropTypes.func.isRequired,
+};
 
 export default Tabs;
