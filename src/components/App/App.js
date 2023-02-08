@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+import checkResponse from '../../utils/checkResponse'; 
 import { INGREDIENTS_LIST_URL } from '../../constants/api';
 
 import AppHeader from "../AppHeader/AppHeader";
@@ -25,7 +26,8 @@ function App() {
     async function fetchIngredientsList() {
       try {
         let result = await fetch(INGREDIENTS_LIST_URL);
-        result = await result.json();
+        result = await checkResponse(result);
+
         setState({
           ingredientsList: result.data,
           loading: false,
