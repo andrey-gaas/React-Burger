@@ -5,3 +5,8 @@
   margin: 0 auto;
   width: var(--container-width);
 }
+
+.message {
+  margin: 40px auto;
+  text-align: center;
+}

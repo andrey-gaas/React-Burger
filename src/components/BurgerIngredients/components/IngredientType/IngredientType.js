@@ -7,7 +7,7 @@ import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-c
 import styles from "./IngredientType.module.css";
 
 function IngredientType(props) {
-  const { title, elementRef, list } = props;
+  const { title, elementRef, list, elementClick } = props;
 
   return (
     <>
@@ -16,7 +16,7 @@ function IngredientType(props) {
       </h3>
       <ul className={`${styles.list} mt-6`}>
         {list.map((item) => (
-          <li key={item._id} className={`${styles.card} pl-4 pr-4`}>
+          <li key={item._id} className={`${styles.card} pl-4 pr-4`} onClick={() => elementClick(item)}>
             <Counter count={1} size="default" extraClass="m-1" />
             <img src={item.image} alt={item.name} className={styles.image} />
             <div className={`${styles.price} mt-1`}>
@@ -38,9 +38,10 @@ function IngredientType(props) {
 IngredientType.propTypes = {
   title: PropTypes.string.isRequired,
   elementRef: PropTypes.shape({
-    current: PropTypes.instanceOf(HTMLButtonElement),
+    current: PropTypes.instanceOf(HTMLHeadingElement),
   }).isRequired,
   list: dataType,
+  elementClick: PropTypes.func.isRequired,
 };
 
 export default memo(IngredientType);

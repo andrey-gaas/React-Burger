@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -38,4 +39,4 @@ Tabs.propTypes = {
   setIngredientType: PropTypes.func.isRequired,
 };
 
-export default Tabs;
+export default memo(Tabs);
