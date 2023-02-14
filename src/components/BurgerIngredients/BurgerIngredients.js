@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo, useCallback } from "react";
-import dataType from '../../types/data';
+import { ingredientsList } from '../../types/data';
 
 import Tabs from "./components/Tabs/Tabs";
 import IngredientType from "./components/IngredientType/IngredientType";
@@ -81,7 +81,7 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  data: dataType,
+  data: ingredientsList.isRequired,
 };
 
 export default BurgerIngredients;

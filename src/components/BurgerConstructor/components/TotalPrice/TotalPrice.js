@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { convertedIngredient } from '../../../../types/data';
 
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -31,6 +32,7 @@ function TotalPrice(props) {
 
 TotalPrice.propTypes = {
   checkout: PropTypes.func.isRequired,
+  data: convertedIngredient.isRequired,
 };
 
 export default TotalPrice;

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import PropTypes from 'prop-types';
-import dataType from '../../../../types/data';
+import { ingredientsList } from '../../../../types/data';
 
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -40,7 +40,7 @@ IngredientType.propTypes = {
   elementRef: PropTypes.shape({
     current: PropTypes.instanceOf(HTMLHeadingElement),
   }).isRequired,
-  list: dataType,
+  list: ingredientsList.isRequired,
   elementClick: PropTypes.func.isRequired,
 };
 
