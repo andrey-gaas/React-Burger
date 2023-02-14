@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import ConstructorContext from '../../services/ConstructorContext';
-import checkResponse from '../../utils/checkResponse'; 
-import { INGREDIENTS_LIST_URL } from '../../constants/api';
+import IngredientsApi from '../../API/IngredientsApi';
 
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -19,7 +18,7 @@ function App() {
 
   const [selectedIngredients, setSelectedIngredients] = useState([
     {
-      _id: "60666c42cc7b410027a1a9b5",
+      _id: "60d3b41abdacab0026a733ca",
       name: "Говяжий метеорит (отбивная)",
       type: "main",
       proteins: 800,
@@ -33,7 +32,7 @@ function App() {
       __v: 0,
     },
     {
-      _id: "60666c42cc7b410027a1a9b7",
+      _id: "60d3b41abdacab0026a733cc",
       name: "Соус Spicy-X",
       type: "sauce",
       proteins: 30,
@@ -47,7 +46,7 @@ function App() {
       __v: 0,
     },
     {
-      _id: "60666c42cc7b410027a1a9b1",
+      _id: "60d3b41abdacab0026a733c6",
       name: "Краторная булка N-200i",
       type: "bun",
       proteins: 80,
@@ -71,9 +70,8 @@ function App() {
 
     async function fetchIngredientsList() {
       try {
-        let result = await fetch(INGREDIENTS_LIST_URL);
-        result = await checkResponse(result);
-
+        const result = await IngredientsApi.fetchIngredientsList();
+        
         setIngredientsList({
           list: result.data,
           loading: false,
