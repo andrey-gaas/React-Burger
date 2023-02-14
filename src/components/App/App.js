@@ -79,8 +79,6 @@ function App() {
           loading: false,
           hasError: false,
         });
-
-        console.log(result.data);
       } catch(error) {
         setIngredientsList(state => ({
           ...state,

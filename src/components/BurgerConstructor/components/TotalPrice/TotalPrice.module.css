@@ -1,0 +1,10 @@
+.total-contaier {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+}

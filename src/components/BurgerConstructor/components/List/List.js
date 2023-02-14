@@ -1,5 +1,4 @@
-import { useMemo, useContext } from 'react';
-import ConstructorContext from '../../../../services/ConstructorContext';
+// import PropTypes from 'prop-types';
 
 import {
   ConstructorElement,
@@ -8,47 +7,19 @@ import {
 
 import styles from "./List.module.css";
 
-function List() {
-  const { selectedIngredients } = useContext(ConstructorContext);
+function List(props) {
+  const { data } = props;
 
   const getType = (index) => {
     if (index === 0) return 'top';
-    else if (index === filteredIngredients.length - 1) return 'bottom';
+    else if (index === data.length - 1) return 'bottom';
     return undefined;
   }
-
-  const filteredIngredients = useMemo(() => {
-    const data = [];
-    const bun = selectedIngredients.find(item => item.type === 'bun');
-
-    if (bun) {
-      data.push({
-        ...bun,
-        name: `${bun.name} (верх)`,
-        key: `top-${bun._id}`,
-      });
-    }
-
-    selectedIngredients.forEach(item => {
-      if (item.type === 'bun') return;
-      data.push({ ...item, key: item._id });
-    });
-
-    if (bun) {
-      data.push({
-        ...bun,
-        name: `${bun.name} (низ)`,
-        key: `bottom-${bun._id}`,
-      });
-    }
-
-    return data;
-  }, [selectedIngredients]);
   
   return (
     <ul className={styles.list}>
       {
-        filteredIngredients.map((item, i) => (
+        data.map((item, i) => (
           <li className={`mt-4 ${styles['list-item']}`} key={item.key}>
             {
               item.type !== 'bun' && <DragIcon type="primary" />
@@ -67,5 +38,9 @@ function List() {
     </ul>
   );
 }
+
+List.propTypes = {
+
+};
 
 export default List;
