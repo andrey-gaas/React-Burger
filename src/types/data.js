@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ingredient = {
+export const ingredient = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -13,11 +13,4 @@ const ingredient = {
   image_mobile: PropTypes.string.isRequired,
   image_large: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired,
-};
-
-export const ingredientsList = PropTypes.arrayOf(PropTypes.shape(ingredient));
-
-export const convertedIngredient = PropTypes.arrayOf(PropTypes.shape({
-  ...ingredient,
-  key: PropTypes.string.isRequired,
-}));
+});

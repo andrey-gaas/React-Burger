@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import ConstructorContext from '../../services/ConstructorContext';
+import BurgerContext from '../../services/BurgerContext';
 import IngredientsApi from '../../API/IngredientsApi';
 
 import AppHeader from "../AppHeader/AppHeader";
@@ -67,12 +68,12 @@ function App() {
       <main className={styles.main}>
         {
           ingredientsList.list &&
-            <>
-              <BurgerIngredients data={ingredientsList.list} />
+            <BurgerContext.Provider value={{ ingredientsList: ingredientsList.list }}>
+              <BurgerIngredients />
               <ConstructorContext.Provider value={{ selectedIngredients, setIngredients: setSelectedIngredients }}>
                 <BurgerConstructor data={ingredientsList.list} />
               </ConstructorContext.Provider>
-            </>
+            </BurgerContext.Provider>
         }
       </main>
     </>

@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+import { ingredient } from '../../../../types/data';
 
 import styles from './IngredientDetails.module.css';
 
 function IngredientDetails(props) {
-  const { image, name, calories, proteins, fat, carbohydrates } = props;
+  const { image, name, calories, proteins, fat, carbohydrates } = props.data;
 
   return (
     <section className={styles['content']}>
@@ -32,12 +32,7 @@ function IngredientDetails(props) {
 }
 
 IngredientDetails.propTypes = {
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  calories: PropTypes.number.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
+  data: ingredient.isRequired,
 };
 
 export default IngredientDetails;

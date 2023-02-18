@@ -1,5 +1,5 @@
-import { useState, useRef, useMemo, useCallback } from "react";
-import { ingredientsList } from '../../types/data';
+import { useState, useRef, useMemo, useCallback, useContext } from "react";
+import BurgerContext from "../../services/BurgerContext";
 
 import Tabs from "./components/Tabs/Tabs";
 import IngredientType from "./components/IngredientType/IngredientType";
@@ -8,8 +8,8 @@ import Modal from "../Modal/Modal";
 
 import styles from "./BurgerIngredients.module.css";
 
-function BurgerIngredients(props) {
-  const { data } = props;
+function BurgerIngredients() {
+  const { ingredientsList } = useContext(BurgerContext);
 
   const listRef = useRef();
   const bunsRef = useRef();
@@ -18,9 +18,9 @@ function BurgerIngredients(props) {
   const [ingredientType, setIngredientType] = useState("bun");
   const [modalData, setModalData] = useState(null);
 
-  const buns = useMemo(() => data.filter((item) => item.type === "bun"), [data]);
-  const sauces = useMemo(() => data.filter((item) => item.type === "sauce"), [data]);
-  const main = useMemo(() => data.filter((item) => item.type === "main"), [data]);
+  const buns = useMemo(() => ingredientsList.filter((item) => item.type === "bun"), [ingredientsList]);
+  const sauces = useMemo(() => ingredientsList.filter((item) => item.type === "sauce"), [ingredientsList]);
+  const main = useMemo(() => ingredientsList.filter((item) => item.type === "main"), [ingredientsList]);
 
   const handleClick = useCallback((value) => {
     setIngredientType(value);
@@ -66,22 +66,11 @@ function BurgerIngredients(props) {
       </section>
       { modalData && (
         <Modal onClose={() => setModalData(false)} title="Детали ингредиента">
-          <IngredientDetails
-            image={modalData.image_large}
-            name={modalData.name}
-            calories={modalData.calories}
-            proteins={modalData.proteins}
-            fat={modalData.fat}
-            carbohydrates={modalData.carbohydrates}
-          />
+          <IngredientDetails data={modalData} />
         </Modal>
       )}
     </>
   );
 }
-
-BurgerIngredients.propTypes = {
-  data: ingredientsList.isRequired,
-};
 
 export default BurgerIngredients;
