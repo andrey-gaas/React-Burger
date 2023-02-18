@@ -1,9 +1,8 @@
-import { CREATE_ORDER_URL } from '../constants/api';
-import checkResponse from '../utils/checkResponse';
+import request from "../utils/request";
 
 class OrderApi {
   static async createOrder(ingredients) {
-    let result = await fetch(CREATE_ORDER_URL, {
+    return request('/api/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -12,10 +11,6 @@ class OrderApi {
         ingredients,
       }),
     });
-
-    result = await checkResponse(result);
-
-    return result;
   }
 }
 
