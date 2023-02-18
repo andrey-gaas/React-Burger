@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { ingredient } from '../../../../types/data';
+import { convertedIngredient } from '../../../../types/data';
 
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Loader from '../../../Loader/Loader';
@@ -44,7 +44,7 @@ function TotalPrice(props) {
 
 TotalPrice.propTypes = {
   checkout: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(ingredient).isRequired,
+  data: PropTypes.arrayOf(convertedIngredient).isRequired,
   loading: PropTypes.bool.isRequired,
 };
 

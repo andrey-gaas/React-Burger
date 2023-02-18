@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { ingredient } from '../../../../types/data';
+import { convertedIngredient } from '../../../../types/data';
 
 import {
   ConstructorElement,
@@ -41,7 +41,7 @@ function List(props) {
 }
 
 List.propTypes = {
-  data: PropTypes.arrayOf(ingredient).isRequired,
+  data: PropTypes.arrayOf(convertedIngredient).isRequired,
 };
 
 export default List;
