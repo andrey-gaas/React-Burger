@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { getIngredients } from '../../services/selectors';
 import actionCreators from '../../services/actionCreators/ingredients';
@@ -41,6 +41,31 @@ function BurgerIngredients() {
       behavior: "smooth",
     });
   }, []);
+  
+  const handleScroll = ({ target }) => {
+    const titles = target.querySelectorAll('h3');
+
+    let element = {
+      node: null,
+      top: null,
+    };
+
+    titles.forEach(item => {
+      const top = Math.abs(item.getBoundingClientRect().top - target.getBoundingClientRect().top);
+
+      if (element.node === null) {
+        element.node = item;
+        element.top = top;
+      } else if (top < element.top) {
+        element.node = item;
+        element.top = top;
+      }
+    });
+    
+    if (ingredientType !== element.node.dataset.type) {
+      setIngredientType(element.node.dataset.type);
+    }
+  };
 
   const openIngredient = ingredient => dispatch(actionCreators.setCurrentIngredient(ingredient));
   const closeModal = () => dispatch(actionCreators.removeCurrentIngredient());
@@ -54,18 +79,37 @@ function BurgerIngredients() {
 
         <section
           ref={listRef}
+          onScroll={handleScroll}
           className={`${styles["ingredients-container"]} mt-10`}
         >
           <div>
-            <IngredientType title="Булки" elementRef={bunsRef} list={buns} elementClick={openIngredient} />
+            <IngredientType
+              title="Булки"
+              elementRef={bunsRef}
+              list={buns}
+              elementClick={openIngredient}
+              type="bun"
+            />
           </div>
 
           <div className="mt-10">
-            <IngredientType title="Соусы" elementRef={saucesRef} list={sauces} elementClick={openIngredient} />
+            <IngredientType
+              title="Соусы"
+              elementRef={saucesRef}
+              list={sauces}
+              elementClick={openIngredient}
+              type="sauce"
+            />
           </div>
 
           <div className="mt-10">
-            <IngredientType title="Начинка" elementRef={mainRef} list={main} elementClick={openIngredient} />
+            <IngredientType
+              title="Начинка"
+              elementRef={mainRef}
+              list={main}
+              elementClick={openIngredient}
+              type="main"
+            />
           </div>
         </section>
       </section>

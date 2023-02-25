@@ -7,11 +7,11 @@ import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-c
 import styles from "./IngredientType.module.css";
 
 function IngredientType(props) {
-  const { title, elementRef, list, elementClick } = props;
+  const { title, elementRef, list, elementClick, type } = props;
 
   return (
     <>
-      <h3 className="text text_type_main-medium" ref={elementRef}>
+      <h3 className="text text_type_main-medium" ref={elementRef} data-type={type}>
         {title}
       </h3>
       <ul className={`${styles.list} mt-6`}>
@@ -42,6 +42,7 @@ IngredientType.propTypes = {
   }).isRequired,
   list: PropTypes.arrayOf(ingredient).isRequired,
   elementClick: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default memo(IngredientType);
