@@ -1,7 +1,8 @@
-import { useState, useMemo, useContext } from 'react';
-import ConstructorContext from '../../services/ConstructorContext';
+import { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredients, getOrder } from '../../services/selectors';
+import fetchOrder from '../../services/thunks/fetchOrder';
 import converterIngredientsData from '../../utils/converterIngredientsData';
-import OrderApi from '../../API/OrderApi';
 
 import Modal from '../Modal/Modal';
 import OrderDetails from './components/OrderDetails/OrderDetails';
@@ -11,28 +12,15 @@ import TotalPrice from './components/TotalPrice/TotalPrice';
 import styles from "./BurgerConstructor.module.css";
 
 function BurgerConstructor() {
-  const { selectedIngredients } = useContext(ConstructorContext);
-  const [isOpenModal, setOpenModal] = useState(false);
-  const [order, setOrder] = useState({
-    loading: false,
-    hasError: false,
-    data: null,
-  });
+  const dispatch = useDispatch();
+  const { selectedIngredients } = useSelector(getIngredients);
+  const { loading, data } = useSelector(getOrder);
 
   const convertedIngredients = useMemo(() => converterIngredientsData(selectedIngredients), [selectedIngredients]);
 
   const createOrder = async () => {
     if (convertedIngredients.length === 0) return;
-    setOrder({ ...order, loading: true });
-
-    try {
-      const result = await OrderApi.createOrder(convertedIngredients.map(item => item._id));
-
-      setOrder({ ...order, loading: false, data: result.order });
-      setOpenModal(true);
-    } catch(error) {
-      setOrder({ ...order, loading: false, hasError: true });
-    }
+    dispatch(fetchOrder(convertedIngredients.map(item => item._id)));
   };
 
   return (
@@ -42,13 +30,13 @@ function BurgerConstructor() {
         <TotalPrice
           data={convertedIngredients}
           checkout={createOrder}
-          loading={order.loading}
+          loading={loading}
         />
       </section>
       {
-        isOpenModal &&
-          <Modal onClose={() => setOpenModal(false)}>
-            <OrderDetails orderNumber={order.data.number} />
+        data &&
+          <Modal onClose={() => console.log('CLOSE')}>
+            <OrderDetails orderNumber={data.number} />
           </Modal>
       }
     </>

@@ -1,5 +1,6 @@
-import { useState, useRef, useMemo, useCallback, useContext } from "react";
-import BurgerContext from "../../services/BurgerContext";
+import { useState, useRef, useMemo, useCallback } from "react";
+import { useSelector } from 'react-redux';
+import { getIngredients } from '../../services/selectors';
 
 import Tabs from "./components/Tabs/Tabs";
 import IngredientType from "./components/IngredientType/IngredientType";
@@ -9,7 +10,7 @@ import Modal from "../Modal/Modal";
 import styles from "./BurgerIngredients.module.css";
 
 function BurgerIngredients() {
-  const { ingredientsList } = useContext(BurgerContext);
+  const { list } = useSelector(getIngredients);
 
   const listRef = useRef();
   const bunsRef = useRef();
@@ -18,9 +19,9 @@ function BurgerIngredients() {
   const [ingredientType, setIngredientType] = useState("bun");
   const [modalData, setModalData] = useState(null);
 
-  const buns = useMemo(() => ingredientsList.filter((item) => item.type === "bun"), [ingredientsList]);
-  const sauces = useMemo(() => ingredientsList.filter((item) => item.type === "sauce"), [ingredientsList]);
-  const main = useMemo(() => ingredientsList.filter((item) => item.type === "main"), [ingredientsList]);
+  const buns = useMemo(() => list.filter((item) => item.type === "bun"), [list]);
+  const sauces = useMemo(() => list.filter((item) => item.type === "sauce"), [list]);
+  const main = useMemo(() => list.filter((item) => item.type === "main"), [list]);
 
   const handleClick = useCallback((value) => {
     setIngredientType(value);
