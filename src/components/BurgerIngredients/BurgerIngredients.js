@@ -1,5 +1,7 @@
-import { useState, useRef, useMemo, useCallback, useContext } from "react";
-import BurgerContext from "../../services/BurgerContext";
+import { useState, useRef, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredients } from '../../services/selectors';
+import actionCreators from '../../services/actionCreators/ingredients';
 
 import Tabs from "./components/Tabs/Tabs";
 import IngredientType from "./components/IngredientType/IngredientType";
@@ -9,18 +11,18 @@ import Modal from "../Modal/Modal";
 import styles from "./BurgerIngredients.module.css";
 
 function BurgerIngredients() {
-  const { ingredientsList } = useContext(BurgerContext);
+  const { list, currentIngredient } = useSelector(getIngredients);
+  const dispatch = useDispatch();
 
   const listRef = useRef();
   const bunsRef = useRef();
   const saucesRef = useRef();
   const mainRef = useRef();
   const [ingredientType, setIngredientType] = useState("bun");
-  const [modalData, setModalData] = useState(null);
 
-  const buns = useMemo(() => ingredientsList.filter((item) => item.type === "bun"), [ingredientsList]);
-  const sauces = useMemo(() => ingredientsList.filter((item) => item.type === "sauce"), [ingredientsList]);
-  const main = useMemo(() => ingredientsList.filter((item) => item.type === "main"), [ingredientsList]);
+  const buns = useMemo(() => list.filter((item) => item.type === "bun"), [list]);
+  const sauces = useMemo(() => list.filter((item) => item.type === "sauce"), [list]);
+  const main = useMemo(() => list.filter((item) => item.type === "main"), [list]);
 
   const handleClick = useCallback((value) => {
     setIngredientType(value);
@@ -40,6 +42,9 @@ function BurgerIngredients() {
     });
   }, []);
 
+  const openIngredient = ingredient => dispatch(actionCreators.setCurrentIngredient(ingredient));
+  const closeModal = () => dispatch(actionCreators.removeCurrentIngredient());
+
   return (
     <>
       <section>
@@ -52,21 +57,21 @@ function BurgerIngredients() {
           className={`${styles["ingredients-container"]} mt-10`}
         >
           <div>
-            <IngredientType title="Булки" elementRef={bunsRef} list={buns} elementClick={setModalData} />
+            <IngredientType title="Булки" elementRef={bunsRef} list={buns} elementClick={openIngredient} />
           </div>
 
           <div className="mt-10">
-            <IngredientType title="Соусы" elementRef={saucesRef} list={sauces} elementClick={setModalData} />
+            <IngredientType title="Соусы" elementRef={saucesRef} list={sauces} elementClick={openIngredient} />
           </div>
 
           <div className="mt-10">
-            <IngredientType title="Начинка" elementRef={mainRef} list={main} elementClick={setModalData} />
+            <IngredientType title="Начинка" elementRef={mainRef} list={main} elementClick={openIngredient} />
           </div>
         </section>
       </section>
-      { modalData && (
-        <Modal onClose={() => setModalData(false)} title="Детали ингредиента">
-          <IngredientDetails data={modalData} />
+      { currentIngredient && (
+        <Modal onClose={closeModal} title="Детали ингредиента">
+          <IngredientDetails data={currentIngredient} />
         </Modal>
       )}
     </>
