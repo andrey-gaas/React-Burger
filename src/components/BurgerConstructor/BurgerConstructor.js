@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import actionCreators from '../../services/actionCreators/ingredients';
 import { getIngredients, getOrder } from '../../services/selectors';
 import fetchOrder from '../../services/thunks/fetchOrder';
 import converterIngredientsData from '../../utils/converterIngredientsData';
@@ -16,6 +18,20 @@ function BurgerConstructor() {
   const { selectedIngredients } = useSelector(getIngredients);
   const { loading, data } = useSelector(getOrder);
 
+  // eslint-disable-next-line
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop: ingredient => {
+      if (selectedIngredients.find(item => item.type === 'bun') && ingredient.type === 'bun') {
+        dispatch(actionCreators.removeBun());
+      }
+      dispatch(actionCreators.addIngredient(ingredient));
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
+  });
+
   const convertedIngredients = useMemo(() => converterIngredientsData(selectedIngredients), [selectedIngredients]);
 
   const createOrder = async () => {
@@ -25,8 +41,8 @@ function BurgerConstructor() {
 
   return (
     <>
-      <section className={`${styles.container} mt-25`}>
-        <List data={convertedIngredients} />
+      <section className={`${styles.container} mt-25`} ref={dropTarget}>
+        <List data={convertedIngredients} backlight={isHover} />
         <TotalPrice
           data={convertedIngredients}
           checkout={createOrder}

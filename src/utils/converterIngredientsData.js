@@ -12,7 +12,7 @@ export default function converterIngredientsData(ingredientsList) {
 
   ingredientsList.forEach(item => {
     if (item.type === 'bun') return;
-    data.push({ ...item, key: item._id });
+    data.push({ ...item, key: `${item._id}-${Math.random()}` });
   });
 
   if (bun) {

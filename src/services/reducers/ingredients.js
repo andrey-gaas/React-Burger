@@ -1,4 +1,5 @@
 import * as actions from '../actions/ingredients';
+import swap from '../../utils/swap';
 
 const initialState = {
   list: null,
@@ -21,6 +22,16 @@ function ingredientsReducer(state = initialState, action) {
       return { ...state, currentIngredient: action.ingredient };
     case actions.REMOVE_CURRENT_INGREDIENT:
       return { ...state, currentIngredient: null };
+
+    case actions.ADD_INGREDIENT:
+      return { ...state, selectedIngredients: [...state.selectedIngredients, action.ingredient] };
+    case actions.REMOVE_INGREDIENT:
+      return { ...state, selectedIngredients: state.selectedIngredients.filter((item, i) => i !== action.index) };
+    case actions.REMOVE_BUN:
+      return { ...state, selectedIngredients: state.selectedIngredients.filter(item => item.type !== 'bun') };
+
+    case actions.MOVE_INGREDIENTS:
+      return { ...state, selectedIngredients: [...swap(state.selectedIngredients, action.target, action.movable)] };
 
     default:
       return state;

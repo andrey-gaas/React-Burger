@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from "react-dnd-html5-backend";
 import fetchIngredientsList from '../../services/thunks/fetchIngredients';
 import { getIngredients } from '../../services/selectors';
 
@@ -31,10 +33,10 @@ function App() {
       <main className={styles.main}>
         {
           list &&
-            <>
+            <DndProvider backend={HTML5Backend}>
               <BurgerIngredients />
               <BurgerConstructor data={list} />
-            </>
+            </DndProvider>
         }
       </main>
     </>

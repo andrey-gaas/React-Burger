@@ -1,12 +1,12 @@
-import { useState, useRef, useMemo, useCallback, useEffect } from "react";
+import { useState, useRef, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { getIngredients } from '../../services/selectors';
 import actionCreators from '../../services/actionCreators/ingredients';
 
 import Tabs from "./components/Tabs/Tabs";
-import IngredientType from "./components/IngredientType/IngredientType";
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
 import Modal from "../Modal/Modal";
+import Ingredient from "./components/Ingredient/Ingredient";
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -83,33 +83,48 @@ function BurgerIngredients() {
           className={`${styles["ingredients-container"]} mt-10`}
         >
           <div>
-            <IngredientType
-              title="Булки"
-              elementRef={bunsRef}
-              list={buns}
-              elementClick={openIngredient}
-              type="bun"
-            />
+            <h3 className="text text_type_main-medium" ref={bunsRef} data-type="bun">
+              Булки
+            </h3>
+            <ul className={`${styles.list} mt-6`}>
+              {buns.map((item) => (
+                <Ingredient
+                  key={item._id}
+                  handleClick={() => openIngredient(item)}
+                  ingredient={item}
+                />
+              ))}
+            </ul>
           </div>
 
           <div className="mt-10">
-            <IngredientType
-              title="Соусы"
-              elementRef={saucesRef}
-              list={sauces}
-              elementClick={openIngredient}
-              type="sauce"
-            />
+            <h3 className="text text_type_main-medium" ref={saucesRef} data-type="sauce">
+              Соусы
+            </h3>
+            <ul className={`${styles.list} mt-6`}>
+              {sauces.map((item) => (
+                <Ingredient
+                  key={item._id}
+                  handleClick={() => openIngredient(item)}
+                  ingredient={item}
+                />
+              ))}
+            </ul>
           </div>
 
           <div className="mt-10">
-            <IngredientType
-              title="Начинка"
-              elementRef={mainRef}
-              list={main}
-              elementClick={openIngredient}
-              type="main"
-            />
+            <h3 className="text text_type_main-medium" ref={mainRef} data-type="main">
+              Начинка
+            </h3>
+            <ul className={`${styles.list} mt-6`}>
+              {main.map((item) => (
+                <Ingredient
+                  key={item._id}
+                  handleClick={() => openIngredient(item)}
+                  ingredient={item}
+                />
+              ))}
+            </ul>
           </div>
         </section>
       </section>
