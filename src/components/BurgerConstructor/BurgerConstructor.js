@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import actionCreators from '../../services/actionCreators/ingredients';
+import actionCreatorsIngredient from '../../services/actionCreators/ingredients';
+import actionCreatorsOrder from '../../services/actionCreators/order';
 import { getIngredients, getOrder } from '../../services/selectors';
 import fetchOrder from '../../services/thunks/fetchOrder';
 import converterIngredientsData from '../../utils/converterIngredientsData';
@@ -16,16 +17,16 @@ import styles from "./BurgerConstructor.module.css";
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const { selectedIngredients } = useSelector(getIngredients);
-  const { loading, data } = useSelector(getOrder);
+  const { loading, createdOrder } = useSelector(getOrder);
 
   // eslint-disable-next-line
   const [{ isHover }, dropTarget] = useDrop({
     accept: 'ingredient',
     drop: ingredient => {
       if (selectedIngredients.find(item => item.type === 'bun') && ingredient.type === 'bun') {
-        dispatch(actionCreators.removeBun());
+        dispatch(actionCreatorsIngredient.removeBun());
       }
-      dispatch(actionCreators.addIngredient(ingredient));
+      dispatch(actionCreatorsIngredient.addIngredient(ingredient));
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
@@ -39,6 +40,10 @@ function BurgerConstructor() {
     dispatch(fetchOrder(convertedIngredients.map(item => item._id)));
   };
 
+  const closeCreatedOrder = () => {
+    dispatch(actionCreatorsOrder.closeCreatedOrder());
+  };
+
   return (
     <>
       <section className={`${styles.container} mt-25`} ref={dropTarget}>
@@ -50,9 +55,9 @@ function BurgerConstructor() {
         />
       </section>
       {
-        data &&
-          <Modal onClose={() => console.log('CLOSE')}>
-            <OrderDetails orderNumber={data.number} />
+        createdOrder && createdOrder.success &&
+          <Modal onClose={closeCreatedOrder}>
+            <OrderDetails orderNumber={createdOrder.order.number} />
           </Modal>
       }
     </>

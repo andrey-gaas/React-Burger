@@ -1,7 +1,7 @@
 import * as actions from '../actions/order';
 
 const initialState = {
-  data: null,
+  createdOrder: null,
   hasError: false,
   loading: false,
 };
@@ -11,9 +11,12 @@ function orderReducer(state = initialState, action) {
     case actions.FETCH_OREDER:
       return { ...state, hasError: false, loading: true };
     case actions.FETCH_OREDER_SUCCESS:
-      return { ...state, hasError: false, loading: false, data: action.data };
+      return { ...state, hasError: false, loading: false, createdOrder: action.data };
     case actions.FETCH_OREDER_FAIL:
       return { ...state, hasError: true, loading: false };
+
+    case actions.CLOSE_CREATED_ORDER:
+      return { ...state, createdOrder: null };
     default:
       return state;
   }

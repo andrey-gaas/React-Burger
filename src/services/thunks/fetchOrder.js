@@ -7,7 +7,7 @@ function fetchOrderThunk(ingredients) {
 
     try {
       const result = await OrderApi.createOrder(ingredients);
-      dispatch(actions.fetchOrderSuccess(result.data));
+      dispatch(actions.fetchOrderSuccess(result));
     } catch(error) {
       dispatch(actions.fetchOrderFail());
     }
