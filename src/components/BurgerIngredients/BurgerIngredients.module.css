@@ -15,3 +15,14 @@
 .ingredients-container::-webkit-scrollbar-thumb {
   background-color: #8585AD;
 }
+
+.container {
+  position: relative;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 32px 24px;
+  padding: 0;
+}

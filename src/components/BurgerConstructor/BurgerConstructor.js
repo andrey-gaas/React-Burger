@@ -1,7 +1,11 @@
-import { useState, useMemo, useContext } from 'react';
-import ConstructorContext from '../../services/ConstructorContext';
+import { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import actionCreatorsIngredient from '../../services/actionCreators/ingredients';
+import actionCreatorsOrder from '../../services/actionCreators/order';
+import { getIngredients, getOrder } from '../../services/selectors';
+import fetchOrder from '../../services/thunks/fetchOrder';
 import converterIngredientsData from '../../utils/converterIngredientsData';
-import OrderApi from '../../API/OrderApi';
 
 import Modal from '../Modal/Modal';
 import OrderDetails from './components/OrderDetails/OrderDetails';
@@ -11,44 +15,49 @@ import TotalPrice from './components/TotalPrice/TotalPrice';
 import styles from "./BurgerConstructor.module.css";
 
 function BurgerConstructor() {
-  const { selectedIngredients } = useContext(ConstructorContext);
-  const [isOpenModal, setOpenModal] = useState(false);
-  const [order, setOrder] = useState({
-    loading: false,
-    hasError: false,
-    data: null,
+  const dispatch = useDispatch();
+  const { selectedIngredients } = useSelector(getIngredients);
+  const { loading, createdOrder } = useSelector(getOrder);
+
+  // eslint-disable-next-line
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop: ingredient => {
+      if (selectedIngredients.find(item => item.type === 'bun') && ingredient.type === 'bun') {
+        dispatch(actionCreatorsIngredient.removeBun());
+      }
+      dispatch(actionCreatorsIngredient.addIngredient(ingredient));
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
   });
 
   const convertedIngredients = useMemo(() => converterIngredientsData(selectedIngredients), [selectedIngredients]);
 
   const createOrder = async () => {
     if (convertedIngredients.length === 0) return;
-    setOrder({ ...order, loading: true });
+    dispatch(fetchOrder(convertedIngredients.map(item => item._id)));
+  };
 
-    try {
-      const result = await OrderApi.createOrder(convertedIngredients.map(item => item._id));
-
-      setOrder({ ...order, loading: false, data: result.order });
-      setOpenModal(true);
-    } catch(error) {
-      setOrder({ ...order, loading: false, hasError: true });
-    }
+  const closeCreatedOrder = () => {
+    dispatch(actionCreatorsOrder.closeCreatedOrder());
   };
 
   return (
     <>
-      <section className={`${styles.container} mt-25`}>
-        <List data={convertedIngredients} />
+      <section className={`${styles.container} mt-25`} ref={dropTarget}>
+        <List data={convertedIngredients} backlight={isHover} />
         <TotalPrice
           data={convertedIngredients}
           checkout={createOrder}
-          loading={order.loading}
+          loading={loading}
         />
       </section>
       {
-        isOpenModal &&
-          <Modal onClose={() => setOpenModal(false)}>
-            <OrderDetails orderNumber={order.data.number} />
+        createdOrder && createdOrder.success &&
+          <Modal onClose={closeCreatedOrder}>
+            <OrderDetails orderNumber={createdOrder.order.number} />
           </Modal>
       }
     </>

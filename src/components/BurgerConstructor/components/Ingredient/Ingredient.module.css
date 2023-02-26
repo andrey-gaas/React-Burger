@@ -1,0 +1,17 @@
+.list-item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.ingredient {
+  width: 536px;
+}
+
+.icon-wrapper {
+  cursor: grab;
+}
+
+.repulsion {
+  margin-top: 200px;
+}

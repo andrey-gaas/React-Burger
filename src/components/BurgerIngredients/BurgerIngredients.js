@@ -1,26 +1,28 @@
-import { useState, useRef, useMemo, useCallback, useContext } from "react";
-import BurgerContext from "../../services/BurgerContext";
+import { useState, useRef, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredients } from '../../services/selectors';
+import actionCreators from '../../services/actionCreators/ingredients';
 
 import Tabs from "./components/Tabs/Tabs";
-import IngredientType from "./components/IngredientType/IngredientType";
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
 import Modal from "../Modal/Modal";
+import Ingredient from "./components/Ingredient/Ingredient";
 
 import styles from "./BurgerIngredients.module.css";
 
 function BurgerIngredients() {
-  const { ingredientsList } = useContext(BurgerContext);
+  const { list, currentIngredient } = useSelector(getIngredients);
+  const dispatch = useDispatch();
 
   const listRef = useRef();
   const bunsRef = useRef();
   const saucesRef = useRef();
   const mainRef = useRef();
   const [ingredientType, setIngredientType] = useState("bun");
-  const [modalData, setModalData] = useState(null);
 
-  const buns = useMemo(() => ingredientsList.filter((item) => item.type === "bun"), [ingredientsList]);
-  const sauces = useMemo(() => ingredientsList.filter((item) => item.type === "sauce"), [ingredientsList]);
-  const main = useMemo(() => ingredientsList.filter((item) => item.type === "main"), [ingredientsList]);
+  const buns = useMemo(() => list.filter((item) => item.type === "bun"), [list]);
+  const sauces = useMemo(() => list.filter((item) => item.type === "sauce"), [list]);
+  const main = useMemo(() => list.filter((item) => item.type === "main"), [list]);
 
   const handleClick = useCallback((value) => {
     setIngredientType(value);
@@ -39,6 +41,34 @@ function BurgerIngredients() {
       behavior: "smooth",
     });
   }, []);
+  
+  const handleScroll = ({ target }) => {
+    const titles = target.querySelectorAll('h3');
+
+    let element = {
+      node: null,
+      top: null,
+    };
+
+    titles.forEach(item => {
+      const top = Math.abs(item.getBoundingClientRect().top - target.getBoundingClientRect().top);
+
+      if (element.node === null) {
+        element.node = item;
+        element.top = top;
+      } else if (top < element.top) {
+        element.node = item;
+        element.top = top;
+      }
+    });
+    
+    if (ingredientType !== element.node.dataset.type) {
+      setIngredientType(element.node.dataset.type);
+    }
+  };
+
+  const openIngredient = ingredient => dispatch(actionCreators.setCurrentIngredient(ingredient));
+  const closeModal = () => dispatch(actionCreators.removeCurrentIngredient());
 
   return (
     <>
@@ -49,24 +79,58 @@ function BurgerIngredients() {
 
         <section
           ref={listRef}
+          onScroll={handleScroll}
           className={`${styles["ingredients-container"]} mt-10`}
         >
           <div>
-            <IngredientType title="Булки" elementRef={bunsRef} list={buns} elementClick={setModalData} />
+            <h3 className="text text_type_main-medium" ref={bunsRef} data-type="bun">
+              Булки
+            </h3>
+            <ul className={`${styles.list} mt-6`}>
+              {buns.map((item) => (
+                <Ingredient
+                  key={item._id}
+                  handleClick={() => openIngredient(item)}
+                  ingredient={item}
+                />
+              ))}
+            </ul>
           </div>
 
           <div className="mt-10">
-            <IngredientType title="Соусы" elementRef={saucesRef} list={sauces} elementClick={setModalData} />
+            <h3 className="text text_type_main-medium" ref={saucesRef} data-type="sauce">
+              Соусы
+            </h3>
+            <ul className={`${styles.list} mt-6`}>
+              {sauces.map((item) => (
+                <Ingredient
+                  key={item._id}
+                  handleClick={() => openIngredient(item)}
+                  ingredient={item}
+                />
+              ))}
+            </ul>
           </div>
 
           <div className="mt-10">
-            <IngredientType title="Начинка" elementRef={mainRef} list={main} elementClick={setModalData} />
+            <h3 className="text text_type_main-medium" ref={mainRef} data-type="main">
+              Начинка
+            </h3>
+            <ul className={`${styles.list} mt-6`}>
+              {main.map((item) => (
+                <Ingredient
+                  key={item._id}
+                  handleClick={() => openIngredient(item)}
+                  ingredient={item}
+                />
+              ))}
+            </ul>
           </div>
         </section>
       </section>
-      { modalData && (
-        <Modal onClose={() => setModalData(false)} title="Детали ингредиента">
-          <IngredientDetails data={modalData} />
+      { currentIngredient && (
+        <Modal onClose={closeModal} title="Детали ингредиента">
+          <IngredientDetails data={currentIngredient} />
         </Modal>
       )}
     </>
