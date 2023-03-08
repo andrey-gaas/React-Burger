@@ -4,3 +4,4 @@ export { default as BurgerIngredients } from './BurgerIngredients/BurgerIngredie
 export { default as Loader } from './Loader/Loader';
 export { default as Modal } from './Modal/Modal';
 export { default as ModalOverlay } from './ModalOverlay/ModalOverlay';
+export { default as Profile } from './Profile/Profile';

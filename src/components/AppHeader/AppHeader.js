@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import {
   BurgerIcon,
   ListIcon,
@@ -31,12 +33,14 @@ function AppHeader() {
         </div>
 
         <div className={styles["personal-area-container"]}>
-          <button className={`${styles.button} pl-5 pr-5`}>
-            <ProfileIcon type="secondary" />
-            <p className="ml-2 text text_type_main-default text_color_inactive">
-              Личный кабинет
-            </p>
-          </button>
+          <Link to="/profile">
+            <button className={`${styles.button} pl-5 pr-5`}>
+              <ProfileIcon type="secondary" />
+              <p className="ml-2 text text_type_main-default text_color_inactive">
+                Личный кабинет
+              </p>
+            </button>
+          </Link>
         </div>
       </div>
     </header>
