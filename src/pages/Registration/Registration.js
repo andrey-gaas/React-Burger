@@ -2,19 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './Login.module.css';
+import styles from './Registration.module.css';
 
-function LoginPage() {
+function RegistrationPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [state, setState] = useState({
+    name: '',
     email: '',
     password: '',
   });
-  const emailRef = useRef();
+  const nameRef = useRef();
   const passwordRef = useRef();
 
   useEffect(() => {
-    emailRef.current.focus();
+    nameRef.current.focus();
   }, []);
 
   const onIconClick = () => {
@@ -28,9 +29,17 @@ function LoginPage() {
 
   return (
     <main className={styles.container}>
-      <h1 className={`text text_type_main-medium ${styles.title}`}>Вход</h1>
+      <h1 className={`text text_type_main-medium ${styles.title}`}>Регистрация</h1>
       <Input
-        ref={emailRef}
+        ref={nameRef}
+        value={state.name}
+        onChange={handleChange}
+        placeholder="Имя"
+        type="text"
+        extraClass="mt-6"
+        name="name"
+      />
+      <Input
         value={state.email}
         onChange={handleChange}
         placeholder="Email"
@@ -54,22 +63,14 @@ function LoginPage() {
       </Button>
       <div className="mt-20 text text_type_main-default text_color_inactive">
         <span>
-          Вы — новый пользователь?
+          Уже зарегистрированы?
         </span>
-        <Link to="/registration" className={styles.link}>
-          Зарегистрироваться
-        </Link>
-      </div>
-      <div className="mt-4 text text_type_main-default text_color_inactive">
-        <span>
-          Забыли пароль?
-        </span>
-        <Link to="/forgot-password" className={styles.link}>
-          Восстановить пароль
+        <Link to="/login" className={styles.link}>
+          Войти
         </Link>
       </div>
     </main>
   );
 }
 
-export default LoginPage;
+export default RegistrationPage;
