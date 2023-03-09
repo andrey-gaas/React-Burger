@@ -1,6 +1,20 @@
 import request from "../utils/request";
 
 class OrderApi {
+  static async registration(email, password, name) {
+    return request('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+      }),
+    });
+  }
+
   static async forgotPassword(email) {
     return request('/api/password-reset', {
       method: 'POST',

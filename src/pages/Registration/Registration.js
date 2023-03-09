@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import * as EmailValidator from 'email-validator';
+import { getRegistrationData } from '../../services/selectors';
+import registrationThunk from '../../services/thunks/registration';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Loader } from '../../components';
 import styles from './Registration.module.css';
 
 function RegistrationPage() {
@@ -11,8 +16,15 @@ function RegistrationPage() {
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState({
+    nameError: '',
+    emailError: '',
+    passwordError: '',
+  });
   const nameRef = useRef();
   const passwordRef = useRef();
+  const dispatch = useDispatch();
+  const { loading, user } = useSelector(getRegistrationData);
 
   useEffect(() => {
     nameRef.current.focus();
@@ -24,8 +36,31 @@ function RegistrationPage() {
   };
 
   const handleChange = ({ target }) => {
+    setErrors({ ...errors, [`${target.name}Error`]: '' });
     setState({ ...state, [target.name]: target.value });
   };
+
+  const handleClick = () => {
+    const { name, email, password } = state;
+
+    if (!name) {
+      return setErrors({ ...errors, nameError: 'Введите ваше имя' });
+    }
+
+    if (!EmailValidator.validate(email)) {
+      return setErrors({ ...errors, emailError: 'Введите валидный Email' });
+    }
+
+    if (!password || password.length < 6) {
+      return setErrors({ ...errors, passwordError: 'Пароль должен содержать от 6 до 16 символов' });
+    }
+
+    dispatch(registrationThunk(name, email, password));
+  };
+
+  if (user !== null) {
+    return <Navigate to="/profile" />;
+  }
 
   return (
     <main className={styles.container}>
@@ -38,6 +73,8 @@ function RegistrationPage() {
         type="text"
         extraClass="mt-6"
         name="name"
+        error={!!errors.nameError}
+        errorText={errors.nameError}
       />
       <Input
         value={state.email}
@@ -46,6 +83,8 @@ function RegistrationPage() {
         type="email"
         extraClass="mt-6"
         name="email"
+        error={!!errors.emailError}
+        errorText={errors.emailError}
       />
       <Input
         ref={passwordRef}
@@ -57,9 +96,22 @@ function RegistrationPage() {
         name="password"
         icon={showPassword ? 'HideIcon' : 'ShowIcon'}
         onIconClick={onIconClick}
+        error={!!errors.passwordError}
+        errorText={errors.passwordError}
       />
-      <Button extraClass="mt-6" htmlType="button">
-        Вход
+      <Button
+        extraClass={`mt-6 ${styles.button}`}
+        htmlType="button"
+        onClick={handleClick}
+        disabled={loading}
+      >
+        Зарегистрироваться
+        {
+          loading && (
+          <div className={`${styles['loader-container']} ml-2`}>
+            <Loader />
+          </div>
+        )}
       </Button>
       <div className="mt-20 text text_type_main-default text_color_inactive">
         <span>
