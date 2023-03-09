@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import * as EmailValidator from 'email-validator';
+import AuthApi from '../../API/AuthApi';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ForgotPassword.module.css';
 
 function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState('');
   const inputRef = useRef();
   const navigate = useNavigate();
 
@@ -14,11 +17,27 @@ function ForgotPasswordPage() {
   }, []);
 
   const handleChange = ({ target }) => {
+    setError('');
     setEmail(target.value);
   };
 
-  const handleClick = () => {
-    navigate('/reset-password', { replace: true });
+  const handleClick = async () => {
+    if (!EmailValidator.validate(email)) {
+      setError('Введите валидный Email');
+      return;
+    }
+
+    let result = null;
+
+    try {
+      result = await AuthApi.forgotPassword(email);
+    } catch(error) {
+      console.log(error);
+    }
+
+    if (result.success) {
+      navigate('/reset-password');
+    }
   };
 
   return (
@@ -32,6 +51,8 @@ function ForgotPasswordPage() {
         type="email"
         extraClass="mt-6"
         name="email"
+        error={!!error}
+        errorText={error}
       />
       <Button extraClass="mt-6" htmlType="button" onClick={handleClick}>
         Восстановить

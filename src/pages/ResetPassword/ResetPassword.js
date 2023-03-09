@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthApi from '../../API/AuthApi';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ResetPassword.module.css';
@@ -9,6 +10,10 @@ function ResetPasswordPage() {
   const [state, setState] = useState({
     password: '',
     code: '',
+  });
+  const [errors, setErrors] = useState({
+    passwordError: '',
+    codeError: '',
   });
   const navigate = useNavigate();
   const passwordRef = useRef();
@@ -24,10 +29,31 @@ function ResetPasswordPage() {
 
   const handleChange = ({ target }) => {
     setState({ ...state, [target.name]: target.value });
+    setErrors({ ...errors, [`${target.name}Error`]: '' });
   };
 
-  const handleClick = () => {
-    navigate('/login', { replace: true });
+  const handleClick = async () => {
+    const { password, code } = state;
+
+    if (!password) {
+      return setErrors({ ...errors, passwordError: 'Введите новый пароль' });
+    }
+
+    if (!code) {
+      return setErrors({ ...errors, codeError: 'Введите код из письма' });
+    }
+
+    let result = null;
+
+    try {
+      result = await AuthApi.resetPassword(password, code);
+    } catch(error) {
+      console.log(error);
+    }
+
+    if (result.success) {
+      navigate('/login', { replace: true });
+    }
   };
 
   return (
@@ -43,6 +69,8 @@ function ResetPasswordPage() {
         name="password"
         icon={showPassword ? 'HideIcon' : 'ShowIcon'}
         onIconClick={onIconClick}
+        error={!!errors.passwordError}
+        errorText={errors.passwordError}
       />
       <Input
         value={state.code}
@@ -51,6 +79,8 @@ function ResetPasswordPage() {
         type="text"
         extraClass="mt-6"
         name="code"
+        error={!!errors.codeError}
+        errorText={errors.codeError}
       />
       <Button extraClass="mt-6" htmlType="button" onClick={handleClick}>
         Сохранить
