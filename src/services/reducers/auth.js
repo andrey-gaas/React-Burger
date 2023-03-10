@@ -2,8 +2,6 @@ import * as actions from '../actions/auth';
 
 const initialState = {
   user: null,
-  accessToken: null,
-  refreshToken: null,
   loading: {
     registration: false,
     login: false,
@@ -50,8 +48,6 @@ function orderReducer(state = initialState, action) {
       return {
         ...state,
         user: action.data.user,
-        accessToken: action.data.accessToken,
-        refreshToken: action.data.refreshToken,
         loading: { ...state.loading, registration: false, login: false },
       };
     default:

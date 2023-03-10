@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as EmailValidator from 'email-validator';
 import { getRegistrationData } from '../../services/selectors';
@@ -24,7 +24,7 @@ function RegistrationPage() {
   const nameRef = useRef();
   const passwordRef = useRef();
   const dispatch = useDispatch();
-  const { loading } = useSelector(getRegistrationData);
+  const { loading, user } = useSelector(getRegistrationData);
 
   useEffect(() => {
     nameRef.current.focus();
@@ -57,6 +57,10 @@ function RegistrationPage() {
 
     dispatch(registrationThunk(name, email, password));
   };
+
+  if (user !== null) {
+    return <Navigate to="/" />
+  }
 
   return (
     <main className={styles.container}>

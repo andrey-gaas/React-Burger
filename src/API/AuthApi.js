@@ -52,6 +52,30 @@ class OrderApi {
       }),
     });
   }
+
+  static async updateToken(refreshToken) {
+    return request('/api/auth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        token: refreshToken,
+      }),
+    });
+  }
+
+  static async logout(refreshToken) {
+    return request('/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        token: refreshToken,
+      }),
+    });
+  }
 }
 
 export default OrderApi;

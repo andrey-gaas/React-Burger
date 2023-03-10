@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as EmailValidator from 'email-validator';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import fetchLoginThunk from '../../services/thunks/fetchLogin';
 import { getLoginData } from '../../services/selectors';
 
@@ -22,7 +22,7 @@ function LoginPage() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const dispatch = useDispatch();
-  const { loading } = useSelector(getLoginData);
+  const { loading, user } = useSelector(getLoginData);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -51,6 +51,10 @@ function LoginPage() {
 
     dispatch(fetchLoginThunk(email, password));
   };
+
+  if (user !== null) {
+    return <Navigate to="/" />
+  }
 
   return (
     <main className={styles.container}>
