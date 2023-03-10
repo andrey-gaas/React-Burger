@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as EmailValidator from 'email-validator';
 import { Link } from 'react-router-dom';
+import fetchLoginThunk from '../../services/thunks/fetchLogin';
+import { getLoginData } from '../../services/selectors';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Loader } from '../../components';
 import styles from './Login.module.css';
 
 function LoginPage() {
@@ -10,8 +15,14 @@ function LoginPage() {
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState({
+    emailError: '',
+    passwordError: '',
+  });
   const emailRef = useRef();
   const passwordRef = useRef();
+  const dispatch = useDispatch();
+  const { loading } = useSelector(getLoginData);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -23,7 +34,22 @@ function LoginPage() {
   };
 
   const handleChange = ({ target }) => {
+    setErrors({ ...errors, [`${target.name}Error`]: '' });
     setState({ ...state, [target.name]: target.value });
+  };
+
+  const handleClick = () => {
+    const { email, password } = state;
+
+    if (!EmailValidator.validate(email)) {
+      return setErrors({ ...errors, emailError: 'Введите валидный Email' });
+    }
+
+    if (!password) {
+      return setErrors({ ...errors, passwordError: 'Введите пароль' });
+    }
+
+    dispatch(fetchLoginThunk(email, password));
   };
 
   return (
@@ -37,6 +63,8 @@ function LoginPage() {
         type="email"
         extraClass="mt-6"
         name="email"
+        error={!!errors.emailError}
+        errorText={errors.emailError}
       />
       <Input
         ref={passwordRef}
@@ -48,9 +76,22 @@ function LoginPage() {
         name="password"
         icon={showPassword ? 'HideIcon' : 'ShowIcon'}
         onIconClick={onIconClick}
+        error={!!errors.passwordError}
+        errorText={errors.passwordError}
       />
-      <Button extraClass="mt-6" htmlType="button">
+      <Button
+        extraClass={`mt-6 ${styles.button}`}
+        htmlType="button"
+        onClick={handleClick}
+        disabled={loading}
+      >
         Вход
+        {
+          loading && (
+          <div className={`${styles['loader-container']} ml-2`}>
+            <Loader />
+          </div>
+        )}
       </Button>
       <div className="mt-20 text text_type_main-default text_color_inactive">
         <span>

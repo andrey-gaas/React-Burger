@@ -15,6 +15,19 @@ class OrderApi {
     });
   }
 
+  static async login(email, password) {
+    return request('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+  }
+
   static async forgotPassword(email) {
     return request('/api/password-reset', {
       method: 'POST',

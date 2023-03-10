@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as EmailValidator from 'email-validator';
 import { getRegistrationData } from '../../services/selectors';
-import registrationThunk from '../../services/thunks/registration';
+import registrationThunk from '../../services/thunks/fetchRegistration';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../components';
@@ -24,7 +24,7 @@ function RegistrationPage() {
   const nameRef = useRef();
   const passwordRef = useRef();
   const dispatch = useDispatch();
-  const { loading, user } = useSelector(getRegistrationData);
+  const { loading } = useSelector(getRegistrationData);
 
   useEffect(() => {
     nameRef.current.focus();
@@ -57,10 +57,6 @@ function RegistrationPage() {
 
     dispatch(registrationThunk(name, email, password));
   };
-
-  if (user !== null) {
-    return <Navigate to="/profile" />;
-  }
 
   return (
     <main className={styles.container}>

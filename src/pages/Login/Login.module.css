@@ -13,3 +13,13 @@
   text-decoration: none;
   color: #4C4CFF;
 }
+
+.button {
+  display: flex;
+  align-items: center;
+}
+
+.loader-container {
+  width: 20px;
+  height: 20px;
+}
