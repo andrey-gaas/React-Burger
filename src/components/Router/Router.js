@@ -7,6 +7,7 @@ import RegistrationPage from '../../pages/Registration/Registration';
 import ForgotPasswordPage from '../../pages/ForgotPassword/ForgotPassword';
 import ResetPasswordPage from '../../pages/ResetPassword/ResetPassword';
 import ProfilePage from '../../pages/Profile/Profile';
+import NotFoundPage from '../../pages/NotFound/NotFound';
 
 import IngredientsDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
@@ -31,6 +32,7 @@ function Router() {
         <Route path='/reset-password' element={<ResetPasswordPage />} />
         <Route path='/profile/*' element={<ProtectedRouteElement element={<ProfilePage />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientsDetails extraClass="mt-20" />} />
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
       {
         background &&
