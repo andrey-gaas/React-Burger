@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../../services/hooks/auth';
 
 function ProtectedRouteElement(props) {
+  const { pathname } = useLocation();
+  
   const { element } = props;
   const { user } = useAuth();
 
@@ -10,6 +12,7 @@ function ProtectedRouteElement(props) {
     return element;
   }
 
+  localStorage.setItem('redirect', pathname);
   return <Navigate to="/login" />;
 }
 

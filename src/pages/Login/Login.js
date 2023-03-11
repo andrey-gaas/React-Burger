@@ -49,6 +49,12 @@ function LoginPage() {
   };
  
   if (user !== null) {
+    const redirect = localStorage.getItem('redirect');
+
+    if (redirect) {
+      return <Navigate to={redirect} />
+    }
+
     return <Navigate to="/" replace />
   }
 
