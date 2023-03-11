@@ -12,7 +12,7 @@ import styles from "./AppHeader.module.css";
 function AppHeader() {
   const homeActive = useMatch('/');
   const feedActive = useMatch('feed');
-  const profileActive = useMatch('profile');
+  const profileActive = useMatch('profile/*');
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>

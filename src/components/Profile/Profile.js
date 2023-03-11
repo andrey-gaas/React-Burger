@@ -24,8 +24,10 @@ function Profile() {
     emailError: '',
     passwordError: '',
   });
+  const [showButtons, setShowButtons] = useState(false);
 
   const handleChange = ({ target }) => {
+    setShowButtons(true);
     setErrors({ ...errors, [`${target.name}Error`]: '' });
     setState({ ...state, [target.name]: target.value });
   };
@@ -36,6 +38,7 @@ function Profile() {
       email: user.email,
       password: '',
     });
+    setShowButtons(false);
   };
 
   const save = () => {
@@ -109,28 +112,32 @@ function Profile() {
               errorText={errors.passwordError}
             />
 
-            <div className={`mt-10 ${styles['buttons-container']}`}>
-              <Button
-                extraClass={styles.button}
-                htmlType="button"
-                onClick={save}
-                disabled={loadingUpdate}
-              >
-                Сохранить
-                {
-                  loadingUpdate && (
-                  <div className={`${styles['loader-container']} ml-2`}>
-                    <Loader />
-                  </div>
-                )}
-              </Button>
-              <Button
-                htmlType="button"
-                onClick={reset}
-              >
-                Отмена
-              </Button>
-            </div>
+            {
+              showButtons &&  (
+                <div className={`mt-10 ${styles['buttons-container']}`}>
+                  <Button
+                    extraClass={styles.button}
+                    htmlType="button"
+                    onClick={save}
+                    disabled={loadingUpdate}
+                  >
+                    Сохранить
+                    {
+                      loadingUpdate && (
+                      <div className={`${styles['loader-container']} ml-2`}>
+                        <Loader />
+                      </div>
+                    )}
+                  </Button>
+                  <Button
+                    htmlType="button"
+                    onClick={reset}
+                  >
+                    Отмена
+                  </Button>
+                </div>
+              )
+            }
           </section>
         )
       }
