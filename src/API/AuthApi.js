@@ -75,6 +75,16 @@ class OrderApi {
     });
   }
 
+  static async updateUser(accessToken, body) {
+    return request('/api/auth/user', {
+      method: 'PATCH',
+      headers: {
+        'Authorization': accessToken,
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
   static async logout(refreshToken) {
     return request('/api/auth/logout', {
       method: 'POST',

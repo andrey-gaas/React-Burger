@@ -6,11 +6,13 @@ const initialState = {
     registration: false,
     login: false,
     user: false,
+    update: false,
   },
   errors: {
     registration: false,
     login: false,
     user: false,
+    update: false,
   },
 };
 
@@ -62,6 +64,26 @@ function orderReducer(state = initialState, action) {
         ...state,
         loading: { ...state.loading, user: false },
         errors: { ...state.errors, user: true },
+      };
+
+    // USER UPDATE
+    case actions.FETCH_USER_UPDATE:
+      return {
+        ...state,
+        loading: { ...state.loading, update: true },
+        errors: { ...state.errors, update: false },
+      };
+    case actions.FETCH_USER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: { ...state.loading, update: false },
+        user: action.data,
+      };
+    case actions.FETCH_USER_UPDATE_FAIL:
+      return {
+        ...state,
+        loading: { ...state.loading, update: false },
+        errors: { ...state.errors, update: true },
       };
 
     // LOGOUT

@@ -15,3 +15,7 @@ export const getUserData = state => ({
   error: state.auth.errors.user,
   user: state.auth.user,
 });
+export const getUserUpdate = state => ({
+  loadingUpdate: state.auth.loading.update,
+  errorUpdate: state.auth.errors.update,
+});

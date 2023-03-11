@@ -2,25 +2,27 @@ import AuthApi from '../../API/AuthApi';
 import actions from '../actionCreators/auth';
 import Cookies from '../../utils/cookies';
 
-function fetchUserData() {
+function fetchUserData(body) {
   return async function(dispatch) {
-    dispatch(actions.fetchUserData());
+    dispatch(actions.fetchUserUpdate());
     const accessToken = Cookies.getCookie('token');
     const refreshToken = Cookies.getCookie('refresh');
     let result = null;
 
     try {
-      result = await AuthApi.fetchUserData(accessToken);
-      dispatch(actions.fetchUserDataSuccess(result.user));
+      result = await AuthApi.updateUser(accessToken, body);
+      console.log(body);
+      console.log(result);
+      dispatch(actions.fetchUserUpdateSuccess(result.user));
     } catch(error) {
       try {
         const tokens = await AuthApi.updateToken(refreshToken, accessToken);
         Cookies.setCookie('token', tokens.accessToken);
 
-        result = await AuthApi.fetchUserData(tokens.accessToken);
-        dispatch(actions.fetchUserDataSuccess(result.user));
+        result = await AuthApi.updateUser(tokens.accessToken, body);
+        dispatch(actions.fetchUserUpdateSuccess(result.user));
       } catch(error) {
-        dispatch(actions.fetchUserDataFail());
+        dispatch(actions.fetchUserUpdateFail());
       }
     }
   }
