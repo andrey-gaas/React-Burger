@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import actionCreatorsIngredient from '../../services/actionCreators/ingredients';
 import actionCreatorsOrder from '../../services/actionCreators/order';
 import { getIngredients, getOrder } from '../../services/selectors';
 import fetchOrder from '../../services/thunks/fetchOrder';
 import converterIngredientsData from '../../utils/converterIngredientsData';
+import useAuth from '../../services/hooks/auth';
 
 import Modal from '../Modal/Modal';
 import OrderDetails from './components/OrderDetails/OrderDetails';
@@ -16,8 +18,10 @@ import styles from "./BurgerConstructor.module.css";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { selectedIngredients } = useSelector(getIngredients);
   const { loading, createdOrder } = useSelector(getOrder);
+  const { user } = useAuth();
 
   // eslint-disable-next-line
   const [{ isHover }, dropTarget] = useDrop({
@@ -37,6 +41,12 @@ function BurgerConstructor() {
 
   const createOrder = async () => {
     if (convertedIngredients.length === 0) return;
+
+    if (!user) {
+      localStorage.setItem('redirect', '/');
+      return navigate('/login');
+    }
+
     dispatch(fetchOrder(convertedIngredients.map(item => item._id)));
   };
 

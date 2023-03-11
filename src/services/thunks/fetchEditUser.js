@@ -11,13 +11,12 @@ function fetchUserData(body) {
 
     try {
       result = await AuthApi.updateUser(accessToken, body);
-      console.log(body);
-      console.log(result);
       dispatch(actions.fetchUserUpdateSuccess(result.user));
     } catch(error) {
       try {
         const tokens = await AuthApi.updateToken(refreshToken, accessToken);
         Cookies.setCookie('token', tokens.accessToken);
+        Cookies.setCookie('refresh', tokens.refreshToken);
 
         result = await AuthApi.updateUser(tokens.accessToken, body);
         dispatch(actions.fetchUserUpdateSuccess(result.user));
