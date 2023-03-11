@@ -79,6 +79,7 @@ class OrderApi {
     return request('/api/auth/user', {
       method: 'PATCH',
       headers: {
+        'Content-Type': 'application/json;charset=utf-8',
         'Authorization': accessToken,
       },
       body: JSON.stringify(body),

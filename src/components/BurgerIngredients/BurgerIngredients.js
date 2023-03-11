@@ -1,18 +1,14 @@
 import { useState, useRef, useMemo, useCallback } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getIngredients } from '../../services/selectors';
-import actionCreators from '../../services/actionCreators/ingredients';
 
 import Tabs from "./components/Tabs/Tabs";
-import IngredientDetails from './components/IngredientDetails/IngredientDetails';
-import Modal from "../Modal/Modal";
 import Ingredient from "./components/Ingredient/Ingredient";
 
 import styles from "./BurgerIngredients.module.css";
 
 function BurgerIngredients() {
-  const { list, currentIngredient } = useSelector(getIngredients);
-  const dispatch = useDispatch();
+  const { list } = useSelector(getIngredients);
 
   const listRef = useRef();
   const bunsRef = useRef();
@@ -67,9 +63,6 @@ function BurgerIngredients() {
     }
   };
 
-  const openIngredient = ingredient => dispatch(actionCreators.setCurrentIngredient(ingredient));
-  const closeModal = () => dispatch(actionCreators.removeCurrentIngredient());
-
   return (
     <>
       <section>
@@ -90,7 +83,6 @@ function BurgerIngredients() {
               {buns.map((item) => (
                 <Ingredient
                   key={item._id}
-                  handleClick={() => openIngredient(item)}
                   ingredient={item}
                 />
               ))}
@@ -105,7 +97,6 @@ function BurgerIngredients() {
               {sauces.map((item) => (
                 <Ingredient
                   key={item._id}
-                  handleClick={() => openIngredient(item)}
                   ingredient={item}
                 />
               ))}
@@ -120,7 +111,6 @@ function BurgerIngredients() {
               {main.map((item) => (
                 <Ingredient
                   key={item._id}
-                  handleClick={() => openIngredient(item)}
                   ingredient={item}
                 />
               ))}
@@ -128,11 +118,6 @@ function BurgerIngredients() {
           </div>
         </section>
       </section>
-      { currentIngredient && (
-        <Modal onClose={closeModal} title="Детали ингредиента">
-          <IngredientDetails data={currentIngredient} />
-        </Modal>
-      )}
     </>
   );
 }

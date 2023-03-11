@@ -1,21 +1,13 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from "react-dnd-html5-backend";
-import fetchIngredientsList from '../../services/thunks/fetchIngredients';
-import { getIngredients } from '../../services/selectors';
+import useIngredients from '../../services/hooks/ingredients';
 
 import { BurgerConstructor, BurgerIngredients } from '../../components';
 
 import styles from "./Home.module.css";
 
 function HomePage() {
-  const { list, loading, hasError } = useSelector(getIngredients);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchIngredientsList());
-  }, [dispatch]);
+  const { list, loading, hasError } = useIngredients();
 
   return (
     <>
