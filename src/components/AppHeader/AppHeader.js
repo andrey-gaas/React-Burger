@@ -14,18 +14,18 @@ function AppHeader() {
     <header className={`${styles.header} pt-4 pb-4`}>
       <div className={styles.wrapper}>
         <div className={styles["buttons-container"]}>
-          <a href="/" className={`${styles.button} pl-5 pr-5`}>
+          <Link to="/" className={`${styles.button} pl-5 pr-5`}>
             <BurgerIcon type="primary" />
             <p className="ml-2 text text_type_main-default text_color_primary">
               Конструктор
             </p>
-          </a>
-          <a href="/" className={`${styles.button} pl-5 pr-5 ml-2`}>
+          </Link>
+          <Link to="/" className={`${styles.button} pl-5 pr-5 ml-2`}>
             <ListIcon type="secondary" />
             <p className="ml-2 text text_type_main-default text_color_inactive">
               Лента заказов
             </p>
-          </a>
+          </Link>
         </div>
 
         <div className={styles["logo-container"]}>

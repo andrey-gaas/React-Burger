@@ -10,3 +10,8 @@ export const getLoginData = state => ({
   error: state.auth.loading.login,
   user: state.auth.user,
 });
+export const getUserData = state => ({
+  loading: state.auth.loading.user,
+  error: state.auth.errors.user,
+  user: state.auth.user,
+});

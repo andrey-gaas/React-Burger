@@ -5,10 +5,12 @@ const initialState = {
   loading: {
     registration: false,
     login: false,
+    user: false,
   },
   errors: {
     registration: false,
     login: false,
+    user: false,
   },
 };
 
@@ -40,6 +42,26 @@ function orderReducer(state = initialState, action) {
         ...state,
         loading: { ...state.loading, login: false },
         errors: { ...state.errors, login: true },
+      };
+
+    // USER DATA
+    case actions.FETCH_USER_DATA:
+      return {
+        ...state,
+        loading: { ...state.loading, user: true },
+        errors: { ...state.errors, user: false },
+      };
+    case actions.FETCH_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: { ...state.loading, user: false },
+        user: action.data,
+      };
+    case actions.FETCH_USER_DATA_FAIL:
+      return {
+        ...state,
+        loading: { ...state.loading, user: false },
+        errors: { ...state.errors, user: true },
       };
 
     // LOGOUT

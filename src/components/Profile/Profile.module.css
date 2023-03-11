@@ -1,0 +1,11 @@
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.message {
+  margin: 40px auto;
+  text-align: center;
+}

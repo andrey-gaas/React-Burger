@@ -53,15 +53,25 @@ class OrderApi {
     });
   }
 
-  static async updateToken(refreshToken) {
+  static async updateToken(refreshToken, accessToken) {
     return request('/api/auth/token', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': accessToken,
       },
       body: JSON.stringify({
         token: refreshToken,
       }),
+    });
+  }
+
+  static async fetchUserData(accessToken) {
+    return request('/api/auth/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': accessToken,
+      },
     });
   }
 
