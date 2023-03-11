@@ -8,6 +8,8 @@ const authActionCreators = {
   fetchLogin: () => ({ type: actions.FETCH_LOGIN }),
   fetchLoginSuccess: (data) => ({ type: actions.FETCH_LOGIN_SUCCESS, data }),
   fetchLoginFail: () => ({ type: actions.FETCH_LOGIN_FAIL }),
+
+  logout: () => ({ type: actions.LOGOUT }),
 };
 
 export default authActionCreators;

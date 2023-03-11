@@ -42,6 +42,10 @@ function orderReducer(state = initialState, action) {
         errors: { ...state.errors, login: true },
       };
 
+    // LOGOUT
+    case actions.LOGOUT:
+      return { ...state, user: null };
+
     // SUCCESS AUTH
     case actions.FETCH_LOGIN_SUCCESS:
     case actions.FETCH_REGISTRATION_SUCCESS:
