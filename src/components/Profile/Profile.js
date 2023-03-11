@@ -1,23 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as EmailValidator from 'email-validator';
-import { getUserData, getUserUpdate } from '../../services/selectors';
-import fetchUserData from '../../services/thunks/fetchUserData';
+import { getUserUpdate } from '../../services/selectors';
 import fetchEditUser from '../../services/thunks/fetchEditUser';
+import useAuth from '../../services/hooks/auth';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../components';
 import styles from './Profile.module.css';
 
 function Profile() {
-  const { user, loading, error } = useSelector(getUserData);
+  const { user, error } = useAuth();
   const { loadingUpdate } = useSelector(getUserUpdate);
   const dispatch = useDispatch();
   
-  const [userLoading, setUserLoading] = useState(null);
   const [state, setState] = useState({
-    name: user ? user.name : '',
-    email: user ? user.email : '',
+    name: user.name,
+    email: user.email,
     password: '',
   });
   const [errors, setErrors] = useState({
@@ -25,25 +24,6 @@ function Profile() {
     emailError: '',
     passwordError: '',
   });
-
-  useEffect(() => {
-    if (user === null) {
-      setUserLoading(true);
-      dispatch(fetchUserData());
-    }
-    // eslint-disable-next-line
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (user && userLoading) {
-      setUserLoading(false);
-      setState({
-        ...state,
-        name: user.name,
-        email: user.email,
-      });
-    }
-  }, [userLoading, user, state]);
 
   const handleChange = ({ target }) => {
     setErrors({ ...errors, [`${target.name}Error`]: '' });
@@ -89,15 +69,11 @@ function Profile() {
   return (
     <>
       {
-        !user && loading &&
-          <p className={`${styles.message} text text_type_main-medium`}>Загрузка...</p>
-      }
-      {
         error &&
           <p className={`${styles.message} text text_type_main-medium`}>Произошла ошибка :(</p>
       }
       {
-        user && (
+        !error && (
           <section>
             <Input
               value={state.name}

@@ -1,20 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import * as EmailValidator from 'email-validator';
 import AuthApi from '../../API/AuthApi';
+import useAuth from '../../services/hooks/auth';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ForgotPassword.module.css';
 
 function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
+  const { user } = useAuth();
+  const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const inputRef = useRef();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   const handleChange = ({ target }) => {
     setError('');
@@ -36,9 +34,14 @@ function ForgotPasswordPage() {
     }
 
     if (result.success) {
+      localStorage.setItem('reset', true);
       navigate('/reset-password');
     }
   };
+
+  if (user !== null) {
+    return <Navigate to="/" replace />
+  }
 
   return (
     <main className={styles.container}>

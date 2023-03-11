@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import AuthApi from '../../API/AuthApi';
+import useAuth from '../../services/hooks/auth';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ResetPassword.module.css';
 
 function ResetPasswordPage() {
+  const { user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [state, setState] = useState({
     password: '',
@@ -17,10 +19,6 @@ function ResetPasswordPage() {
   });
   const navigate = useNavigate();
   const passwordRef = useRef();
-
-  useEffect(() => {
-    passwordRef.current.focus();
-  }, []);
 
   const onIconClick = () => {
     setShowPassword(!showPassword);
@@ -52,9 +50,14 @@ function ResetPasswordPage() {
     }
 
     if (result.success) {
+      localStorage.removeItem('reset');
       navigate('/login', { replace: true });
     }
   };
+
+  if (user !== null || !localStorage.getItem('reset')) {
+    return <Navigate to="/" replace />
+  }
 
   return (
     <main className={styles.container}>

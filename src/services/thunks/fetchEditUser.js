@@ -23,6 +23,8 @@ function fetchUserData(body) {
         dispatch(actions.fetchUserUpdateSuccess(result.user));
       } catch(error) {
         dispatch(actions.fetchUserUpdateFail());
+        Cookies.deleteCookie('token');
+        Cookies.deleteCookie('refresh');
       }
     }
   }

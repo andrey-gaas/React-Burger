@@ -5,7 +5,7 @@ const initialState = {
   loading: {
     registration: false,
     login: false,
-    user: false,
+    user: true,
     update: false,
   },
   errors: {
@@ -65,6 +65,8 @@ function orderReducer(state = initialState, action) {
         loading: { ...state.loading, user: false },
         errors: { ...state.errors, user: true },
       };
+    case actions.CANCEL_FETCH_USER_DATA:
+      return { ...state, loading: { ...state.loading, user: false } };
 
     // USER UPDATE
     case actions.FETCH_USER_UPDATE:

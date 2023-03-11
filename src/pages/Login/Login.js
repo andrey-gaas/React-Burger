@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as EmailValidator from 'email-validator';
 import { Link, Navigate } from 'react-router-dom';
@@ -24,10 +24,6 @@ function LoginPage() {
   const dispatch = useDispatch();
   const { loading, user } = useSelector(getLoginData);
 
-  useEffect(() => {
-    emailRef.current.focus();
-  }, []);
-
   const onIconClick = () => {
     setShowPassword(!showPassword);
     passwordRef.current.focus();
@@ -51,9 +47,9 @@ function LoginPage() {
 
     dispatch(fetchLoginThunk(email, password));
   };
-
+ 
   if (user !== null) {
-    return <Navigate to="/" />
+    return <Navigate to="/" replace />
   }
 
   return (

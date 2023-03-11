@@ -12,6 +12,7 @@ const authActionCreators = {
   fetchUserData: () => ({ type: actions.FETCH_USER_DATA }),
   fetchUserDataSuccess: (data) => ({ type: actions.FETCH_USER_DATA_SUCCESS, data }),
   fetchUserDataFail: () => ({ type: actions.FETCH_USER_DATA_FAIL }),
+  cancelFetchUserData: () => ({ type: actions.CANCEL_FETCH_USER_DATA }),
 
   fetchUserUpdate: () => ({ type: actions.FETCH_USER_UPDATE }),
   fetchUserUpdateSuccess: (data) => ({ type: actions.FETCH_USER_UPDATE_SUCCESS, data }),
