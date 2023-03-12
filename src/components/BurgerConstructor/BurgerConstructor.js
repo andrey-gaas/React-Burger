@@ -43,8 +43,7 @@ function BurgerConstructor() {
     if (convertedIngredients.length === 0) return;
 
     if (!user) {
-      localStorage.setItem('redirect', '/');
-      return navigate('/login');
+      return navigate('/login', { state: { from: '/' } });
     }
 
     dispatch(fetchOrder(convertedIngredients.map(item => item._id)));

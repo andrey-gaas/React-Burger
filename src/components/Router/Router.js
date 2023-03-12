@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
-import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../../pages/Home/Home';
 import LoginPage from '../../pages/Login/Login';
 import RegistrationPage from '../../pages/Registration/Registration';
@@ -30,7 +30,7 @@ function Router() {
         <Route path='/registration' element={<RegistrationPage />} />
         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
         <Route path='/reset-password' element={<ResetPasswordPage />} />
-        <Route path='/profile/*' element={<ProtectedRouteElement element={<ProfilePage />} />} />
+        <Route path='/profile/*' element={<ProtectedRoute element={<ProfilePage />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientsDetails extraClass="mt-20" />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>

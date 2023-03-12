@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import useForm from '../../services/hooks/useForm';
 import useAuth from '../../services/hooks/auth';
 import * as EmailValidator from 'email-validator';
@@ -13,6 +13,7 @@ import styles from './Login.module.css';
 function LoginPage() {
   const { loading, error } = useSelector(getLoginData);
   const dispatch = useDispatch();
+  const location = useLocation();
   const { values, handleChange, errors, setErrors } = useForm(
     { email: '', password: '' },
     { email: '', password: '' },
@@ -39,9 +40,11 @@ function LoginPage() {
 
     dispatch(fetchLogin(values.email, values.password));
   };
+  
+  console.log(location);
 
   if (user !== null) {
-    return <Navigate to="/" />
+    return <Navigate to={location.state?.from || '/'} />
   }
 
   return (
