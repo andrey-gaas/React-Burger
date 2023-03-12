@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import useForm from '../../services/hooks/useForm';
 import useAuth from '../../services/hooks/auth';
+import * as EmailValidator from 'email-validator';
 import { getLoginData } from '../../services/selectors';
 import fetchLogin from '../../services/thunks/fetchLogin';
 
@@ -24,7 +25,15 @@ function LoginPage() {
       return setErrors({ ...errors, email: 'Введите Email' });
     }
 
+    if (!EmailValidator.validate(values.email)) {
+      return setErrors({ ...errors, email: 'Введите корректный Email' });
+    }
+
     if (!values.password) {
+      return setErrors({ ...errors, password: 'Введите пароль' });
+    }
+
+    if (values.password.length < 6 || values.password.length > 16) {
       return setErrors({ ...errors, password: 'Пароль должен содержать от 6 до 16 символов' });
     }
 
