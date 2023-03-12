@@ -4,70 +4,58 @@ import * as EmailValidator from 'email-validator';
 import { getUserUpdate } from '../../services/selectors';
 import fetchEditUser from '../../services/thunks/fetchEditUser';
 import useAuth from '../../services/hooks/auth';
+import useForm from '../../services/hooks/useForm';
 
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../components';
 import styles from './Profile.module.css';
 
 function Profile() {
-  const { user, error } = useAuth();
-  const { loadingUpdate } = useSelector(getUserUpdate);
   const dispatch = useDispatch();
-  
-  const [state, setState] = useState({
-    name: user.name,
-    email: user.email,
-    password: '',
-  });
-  const [errors, setErrors] = useState({
-    nameError: '',
-    emailError: '',
-    passwordError: '',
-  });
   const [showButtons, setShowButtons] = useState(false);
+  const { loadingUpdate } = useSelector(getUserUpdate);
+  const { user, error } = useAuth();
+  const { values, handleChange, errors, setErrors, resetForm } = useForm(
+    { name: user.name, email: user.email, password: '' },
+    { name: '', email: '', password: '' },
+  );
 
-  const handleChange = ({ target }) => {
-    setShowButtons(true);
-    setErrors({ ...errors, [`${target.name}Error`]: '' });
-    setState({ ...state, [target.name]: target.value });
-  };
-
-  const reset = () => {
-    setState({
-      name: user.name,
-      email: user.email,
-      password: '',
-    });
-    setShowButtons(false);
-  };
-
-  const save = () => {
-    const { name, email, password } = state;
-
-    if (!name) {
-      return setErrors({ ...errors, nameError: 'Поле не может быть пустым' });
+  const handleSubmit = event => {
+    event.preventDefault();
+    
+    if (!values.name) {
+      return setErrors({ ...errors, name: 'Поле не может быть пустым' });
     }
 
-    if (!email) {
-      return setErrors({ ...errors, emailError: 'Поле не может быть пустым' });
+    if (!values.email) {
+      return setErrors({ ...errors, email: 'Поле не может быть пустым' });
     }
 
-    if (!EmailValidator.validate(email)) {
-      return setErrors({ ...errors, emailError: 'Вы указали невалидный Email' });
+    if (!EmailValidator.validate(values.email)) {
+      return setErrors({ ...errors, email: 'Вы указали невалидный Email' });
     }
 
-    if (password && password.length < 6) {
-      return setErrors({ ...errors, passwordError: 'Пароль должен содержать не менее 6 символов' });
+    if (values.password && (values.password.length < 6 || values.password.length > 16)) {
+      return setErrors({ ...errors, password: 'Пароль должен содержать от 6 символов до 16 символов' });
     }
 
     const body = {
-      name: name,
-      email: email,
-      ...(password ? { password } : {}),
+      name: values.name,
+      email: values.email,
+      ...(values.password ? { password: values.password } : {}),
     };
 
     dispatch(fetchEditUser(body));
-  };
+  }
+
+  const handleReset = event => {
+    event.preventDefault();
+    resetForm(
+      { name: user.name, email: user.email, password: '' },
+      { name: '', email: '', password: '' },
+    );
+    setShowButtons(false);
+  }
 
   return (
     <>
@@ -77,39 +65,41 @@ function Profile() {
       }
       {
         !error && (
-          <section>
+          <form
+            className={styles.form}
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+          >
             <Input
-              value={state.name}
-              onChange={handleChange}
+              value={values.name}
+              onChange={event => {handleChange(event); setShowButtons(true)}}
               placeholder="Имя"
               type="text"
               extraClass="mt-6"
               name="name"
               icon="EditIcon"
-              error={!!errors.nameError}
-              errorText={errors.nameError}
+              error={!!errors.name}
+              errorText={errors.name}
             />
-            <Input
-              value={state.email}
-              onChange={handleChange}
+            <EmailInput
+              value={values.email}
+              onChange={event => {handleChange(event); setShowButtons(true)}}
               placeholder="Логин"
-              type="email"
               extraClass="mt-6"
               name="email"
               icon="EditIcon"
-              error={!!errors.emailError}
-              errorText={errors.emailError}
+              error={!!errors.email}
+              errorText={errors.email}
             />
-            <Input
-              value={state.password}
-              onChange={handleChange}
+            <PasswordInput
+              value={values.password}
+              onChange={event => {handleChange(event); setShowButtons(true)}}
               placeholder="Пароль"
-              type="password"
               extraClass="mt-6"
               name="password"
               icon="EditIcon"
-              error={!!errors.passwordError}
-              errorText={errors.passwordError}
+              error={!!errors.password}
+              errorText={errors.password}
             />
 
             {
@@ -117,8 +107,7 @@ function Profile() {
                 <div className={`mt-10 ${styles['buttons-container']}`}>
                   <Button
                     extraClass={styles.button}
-                    htmlType="button"
-                    onClick={save}
+                    htmlType="submit"
                     disabled={loadingUpdate}
                   >
                     Сохранить
@@ -130,15 +119,14 @@ function Profile() {
                     )}
                   </Button>
                   <Button
-                    htmlType="button"
-                    onClick={reset}
+                    htmlType="reset"
                   >
                     Отмена
                   </Button>
                 </div>
               )
             }
-          </section>
+          </form>
         )
       }
     </>

@@ -5,6 +5,12 @@
   width: 100%;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+}
+
 .message {
   margin: 40px auto;
   text-align: center;
