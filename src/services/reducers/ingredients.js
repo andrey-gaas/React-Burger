@@ -1,4 +1,5 @@
 import * as actions from '../actions/ingredients';
+import * as orderActions from '../actions/order';
 import swap from '../../utils/swap';
 
 const initialState = {
@@ -25,6 +26,9 @@ function ingredientsReducer(state = initialState, action) {
 
     case actions.MOVE_INGREDIENTS:
       return { ...state, selectedIngredients: [...swap(state.selectedIngredients, action.target, action.movable)] };
+
+    case orderActions.FETCH_ORDER_SUCCESS:
+      return { ...state, selectedIngredients: [] };
 
     default:
       return state;

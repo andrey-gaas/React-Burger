@@ -8,11 +8,11 @@ const initialState = {
 
 function orderReducer(state = initialState, action) {
   switch(action.type) {
-    case actions.FETCH_OREDER:
+    case actions.FETCH_ORDER:
       return { ...state, hasError: false, loading: true };
-    case actions.FETCH_OREDER_SUCCESS:
+    case actions.FETCH_ORDER_SUCCESS:
       return { ...state, hasError: false, loading: false, createdOrder: action.data };
-    case actions.FETCH_OREDER_FAIL:
+    case actions.FETCH_ORDER_FAIL:
       return { ...state, hasError: true, loading: false };
 
     case actions.CLOSE_CREATED_ORDER:
