@@ -7,7 +7,7 @@ export const getRegistrationData = state => ({
 });
 export const getLoginData = state => ({
   loading: state.auth.loading.login,
-  error: state.auth.loading.login,
+  error: state.auth.errors.login,
   user: state.auth.user,
 });
 export const getUserData = state => ({

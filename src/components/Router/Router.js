@@ -16,7 +16,7 @@ function Router() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  let background = location.state && location.state.background;
+  const background = location.state && location.state.background;
 
   const handleModalClose = () => {
     navigate(-1);
@@ -40,7 +40,7 @@ function Router() {
           <Route
             path='/ingredients/:ingredientId'
             element={
-              <Modal onClose={handleModalClose}>
+              <Modal onClose={handleModalClose} title="Детали ингредиента">
                 <IngredientsDetails />
               </Modal>
             }
