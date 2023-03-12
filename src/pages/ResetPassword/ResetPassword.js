@@ -1,55 +1,48 @@
-import { useRef, useState } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
-import AuthApi from '../../API/AuthApi';
+import { useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import useForm from '../../services/hooks/useForm';
 import useAuth from '../../services/hooks/auth';
+import AuthApi from '../../API/AuthApi';
 
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Loader } from '../../components';
 import styles from './ResetPassword.module.css';
 
 function ResetPasswordPage() {
-  const { user } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [state, setState] = useState({
-    password: '',
-    code: '',
-  });
-  const [errors, setErrors] = useState({
-    passwordError: '',
-    codeError: '',
-  });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const passwordRef = useRef();
+  const { values, handleChange, errors, setErrors } = useForm(
+    { password: '', code: '' },
+    { password: '', code: '' },
+  );
+  const { user } = useAuth();
 
-  const onIconClick = () => {
-    setShowPassword(!showPassword);
-    passwordRef.current.focus();
-  };
+  const handleSubmit = async event => {
+    event.preventDefault();
 
-  const handleChange = ({ target }) => {
-    setState({ ...state, [target.name]: target.value });
-    setErrors({ ...errors, [`${target.name}Error`]: '' });
-  };
-
-  const handleClick = async () => {
-    const { password, code } = state;
-
-    if (!password) {
-      return setErrors({ ...errors, passwordError: 'Введите новый пароль' });
+    if (!values.password) {
+      return setErrors({ ...errors, password: 'Введите новый пароль' });
     }
 
-    if (!code) {
-      return setErrors({ ...errors, codeError: 'Введите код из письма' });
+    if (values.password.length < 6 || values.password.length > 16) {
+      return setErrors({ ...errors, password: 'Пароль должен содержать от 6 до 16 символов' });
+    }
+
+    if (!values.code) {
+      return setErrors({ ...errors, code: 'Введите код из письма' });
     }
 
     let result = null;
+    setLoading(true);
 
     try {
-      result = await AuthApi.resetPassword(password, code);
+      result = await AuthApi.resetPassword(values.password, values.code);
     } catch(error) {
       console.log(error);
     }
 
     if (result.success) {
+      setLoading(false);
       localStorage.removeItem('reset');
       navigate('/login', { replace: true });
     }
@@ -62,32 +55,43 @@ function ResetPasswordPage() {
   return (
     <main className={styles.container}>
       <h1 className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</h1>
-      <Input
-        ref={passwordRef}
-        value={state.password}
-        onChange={handleChange}
-        placeholder="Введите новый пароль"
-        type={showPassword ? 'text' : 'password'}
-        extraClass="mt-6"
-        name="password"
-        icon={showPassword ? 'HideIcon' : 'ShowIcon'}
-        onIconClick={onIconClick}
-        error={!!errors.passwordError}
-        errorText={errors.passwordError}
-      />
-      <Input
-        value={state.code}
-        onChange={handleChange}
-        placeholder="Введите код из письма"
-        type="text"
-        extraClass="mt-6"
-        name="code"
-        error={!!errors.codeError}
-        errorText={errors.codeError}
-      />
-      <Button extraClass="mt-6" htmlType="button" onClick={handleClick}>
-        Сохранить
-      </Button>
+      <form
+        className={`mt-6 ${styles.form}`}
+        onSubmit={handleSubmit}
+      >
+        <PasswordInput
+          value={values.password}
+          onChange={handleChange}
+          placeholder="Введите новый пароль"
+          extraClass="mt-6"
+          name="password"
+          error={!!errors.password}
+          errorText={errors.password}
+        />
+        <Input
+          value={values.code}
+          onChange={handleChange}
+          placeholder="Введите код из письма"
+          type="text"
+          extraClass="mt-6"
+          name="code"
+          error={!!errors.code}
+          errorText={errors.code}
+        />
+        <Button
+          extraClass={`mt-6 ${styles.button}`}
+          htmlType="submit"
+          disabled={loading}
+        >
+          Сохранить
+          {
+            loading && (
+            <div className={`${styles['loader-container']} ml-2`}>
+              <Loader />
+            </div>
+          )}
+        </Button>
+      </form>
       <div className="mt-20 text text_type_main-default text_color_inactive">
         <span>
           Вспомнили пароль?

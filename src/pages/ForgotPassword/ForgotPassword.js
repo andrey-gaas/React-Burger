@@ -1,39 +1,45 @@
-import { useRef, useState } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import useForm from '../../services/hooks/useForm';
+import useAuth from '../../services/hooks/auth';
 import * as EmailValidator from 'email-validator';
 import AuthApi from '../../API/AuthApi';
-import useAuth from '../../services/hooks/auth';
 
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Loader } from '../../components';
 import styles from './ForgotPassword.module.css';
 
 function ForgotPasswordPage() {
-  const { user } = useAuth();
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const inputRef = useRef();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { values, handleChange, errors, setErrors } = useForm(
+    { email: '' },
+    { email: '' },
+  );
+  const { user } = useAuth();
 
-  const handleChange = ({ target }) => {
-    setError('');
-    setEmail(target.value);
-  };
+  const handleSubmit = async event => {
+    event.preventDefault();
 
-  const handleClick = async () => {
-    if (!EmailValidator.validate(email)) {
-      setError('Введите валидный Email');
-      return;
+    if (!values.email) {
+      return setErrors({ email: 'Введите Email' });
+    }
+
+    if (!EmailValidator.validate(values.email)) {
+      return setErrors({ email: 'Введите валидный Email' });
     }
 
     let result = null;
+    setLoading(true);
 
     try {
-      result = await AuthApi.forgotPassword(email);
+      result = await AuthApi.forgotPassword(values.email);
     } catch(error) {
       console.log(error);
     }
 
     if (result.success) {
+      setLoading(false);
       localStorage.setItem('reset', true);
       navigate('/reset-password');
     }
@@ -46,20 +52,33 @@ function ForgotPasswordPage() {
   return (
     <main className={styles.container}>
       <h1 className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</h1>
-      <Input
-        ref={inputRef}
-        value={email}
-        onChange={handleChange}
-        placeholder="Укажите e-mail"
-        type="email"
-        extraClass="mt-6"
-        name="email"
-        error={!!error}
-        errorText={error}
-      />
-      <Button extraClass="mt-6" htmlType="button" onClick={handleClick}>
-        Восстановить
-      </Button>
+      <form
+        className={`mt-6 ${styles.form}`}
+        onSubmit={handleSubmit}
+      >
+        <EmailInput
+          value={values.email}
+          onChange={handleChange}
+          placeholder="Укажите e-mail"
+          extraClass="mt-6"
+          name="email"
+          error={!!errors.email}
+          errorText={errors.email}
+        />
+        <Button
+          extraClass={`mt-6 ${styles.button}`}
+          htmlType="submit"
+          disabled={loading}
+        >
+          Восстановить
+          {
+            loading && (
+            <div className={`${styles['loader-container']} ml-2`}>
+              <Loader />
+            </div>
+          )}
+        </Button>
+      </form>
       <div className="mt-20 text text_type_main-default text_color_inactive">
         <span>
           Вспомнили пароль?
