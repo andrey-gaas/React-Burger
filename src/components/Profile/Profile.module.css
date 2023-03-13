@@ -1,0 +1,27 @@
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+}
+
+.message {
+  margin: 40px auto;
+  text-align: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+}
+
+.loader-container {
+  width: 20px;
+  height: 20px;
+}

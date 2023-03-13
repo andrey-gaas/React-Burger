@@ -1,45 +1,24 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from "react-dnd-html5-backend";
-import fetchIngredientsList from '../../services/thunks/fetchIngredients';
-import { getIngredients } from '../../services/selectors';
+import { BrowserRouter } from 'react-router-dom';
+import useAuth from '../../services/hooks/auth';
+import useIngredients from '../../services/hooks/ingredients';
 
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-
-import styles from "./App.module.css";
+import Router from '../Router/Router';
+import styles from './App.module.css';
 
 function App() {
-  const { list, loading, hasError } = useSelector(getIngredients);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchIngredientsList());
-  }, [dispatch]);
+  const { loading: authLoading } = useAuth();
+  const { loading: ingredientsLoading } = useIngredients();
 
   return (
-    <>
+    <BrowserRouter>
       <AppHeader />
       {
-        list === null && loading &&
-          <p className={`${styles.message} text text_type_main-medium`}>Загрузка...</p>
+        (authLoading || ingredientsLoading) ?
+          <p className={`${styles.message} text text_type_main-medium`}>Загрузка...</p> : 
+          <Router />
       }
-      {
-        hasError &&
-          <p className={`${styles.message} text text_type_main-medium`}>Произошла ошибка :(</p>
-      }
-      <main className={styles.main}>
-        {
-          list &&
-            <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <BurgerConstructor data={list} />
-            </DndProvider>
-        }
-      </main>
-    </>
+    </BrowserRouter>
   );
 }
 

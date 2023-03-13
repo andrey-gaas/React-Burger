@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   list-style: none;
+  composes: text_color_primary from global;
   cursor: pointer;
 }
 
@@ -11,11 +12,21 @@
   width: 100%;
 }
 
-.price {
+.price-container {
   display: flex;
   align-items: center;
 }
 
+.price {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .title {
   text-align: center;
+}
+
+.link {
+  text-decoration: none;
 }

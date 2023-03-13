@@ -1,29 +1,27 @@
-import OrderApi from '../../API/OrderApi';
 import AuthApi from '../../API/AuthApi';
-import actions from '../actionCreators/order';
+import actions from '../actionCreators/auth';
 import Cookies from '../../utils/cookies';
 
-function fetchOrderThunk(ingredients) {
+function fetchUserData(body) {
   return async function(dispatch) {
-    dispatch(actions.fetchOrder());
-
+    dispatch(actions.fetchUserUpdate());
     const accessToken = Cookies.getCookie('token');
     const refreshToken = Cookies.getCookie('refresh');
     let result = null;
 
     try {
-      result = await OrderApi.createOrder(ingredients, accessToken);
-      dispatch(actions.fetchOrderSuccess(result));
+      result = await AuthApi.updateUser(accessToken, body);
+      dispatch(actions.fetchUserUpdateSuccess(result.user));
     } catch(error) {
       try {
         const tokens = await AuthApi.updateToken(refreshToken, accessToken);
         Cookies.setCookie('token', tokens.accessToken);
         Cookies.setCookie('refresh', tokens.refreshToken);
 
-        result = await OrderApi.createOrder(ingredients, accessToken);
-        dispatch(actions.fetchOrderSuccess(result));
+        result = await AuthApi.updateUser(tokens.accessToken, body);
+        dispatch(actions.fetchUserUpdateSuccess(result.user));
       } catch(error) {
-        dispatch(actions.fetchOrderFail());
+        dispatch(actions.fetchUserUpdateFail());
         Cookies.deleteCookie('token');
         Cookies.deleteCookie('refresh');
       }
@@ -31,4 +29,4 @@ function fetchOrderThunk(ingredients) {
   }
 }
 
-export default fetchOrderThunk;
+export default fetchUserData;
