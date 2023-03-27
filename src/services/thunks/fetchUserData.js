@@ -12,7 +12,7 @@ function fetchUserData() {
     try {
       result = await AuthApi.fetchUserData(accessToken);
       dispatch(actions.fetchUserDataSuccess(result.user));
-    } catch(error) {
+    } catch (error) {
       try {
         const tokens = await AuthApi.updateToken(refreshToken, accessToken);
         Cookies.setCookie('token', tokens.accessToken);
@@ -20,7 +20,7 @@ function fetchUserData() {
 
         result = await AuthApi.fetchUserData(tokens.accessToken);
         dispatch(actions.fetchUserDataSuccess(result.user));
-      } catch(error) {
+      } catch (error) {
         dispatch(actions.fetchUserDataFail());
         Cookies.deleteCookie('token');
         Cookies.deleteCookie('refresh');
