@@ -7,7 +7,7 @@ import fetchIngredients from '../thunks/fetchIngredients';
 import { IIngredient } from '../../types/ingredient';
 
 interface IUseIngredientsResult {
-  list: IIngredient[];
+  list: IIngredient[] | null;
   loading: boolean;
   hasError: boolean;
 };
@@ -19,7 +19,7 @@ function useIngredients(): IUseIngredientsResult {
   const { list, loading, hasError } = useSelector(getIngredients);
 
   useEffect(() => {
-    if (!list) {
+    if (!list.length) {
       dispatch(fetchIngredients());
     }
   }, [dispatch, list]);

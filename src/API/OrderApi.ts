@@ -1,8 +1,7 @@
-import { IIngredient } from '../types/ingredient';
 import request from "../utils/request";
 
 class OrderApi {
-  static async createOrder(ingredients: IIngredient[], accessToken: string) {
+  static async createOrder(ingredients: string[], accessToken: string) {
     return request('/api/orders', {
       method: 'POST',
       headers: {

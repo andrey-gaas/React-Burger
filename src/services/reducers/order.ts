@@ -1,13 +1,15 @@
 import * as actions from '../actions/order';
+import { IOrderData } from '../../types/order';
+import { TOrderActionCreators } from '../actionCreators/order';
 
-const initialState = {
+const initialState: IOrderData = {
   createdOrder: null,
   hasError: false,
   loading: false,
 };
 
-function orderReducer(state = initialState, action) {
-  switch(action.type) {
+function orderReducer(state: IOrderData = initialState, action: TOrderActionCreators): IOrderData {
+  switch (action.type) {
     case actions.FETCH_ORDER:
       return { ...state, hasError: false, loading: true };
     case actions.FETCH_ORDER_SUCCESS:

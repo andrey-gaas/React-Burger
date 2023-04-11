@@ -13,7 +13,7 @@ function IngredientDetails(props: IProps) {
   const { ingredientId } = useParams();
   const { list } = useIngredients();
 
-  const ingredient = list.find(ingredient => ingredient._id === ingredientId);
+  const ingredient = list?.find(ingredient => ingredient._id === ingredientId);
 
   if (!ingredient) {
     return <Navigate to="/404" />

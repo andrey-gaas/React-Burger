@@ -1,16 +1,19 @@
 import * as actions from '../actions/ingredients';
 import * as orderActions from '../actions/order';
 import swap from '../../utils/swap';
+import { IIngredients } from '../../types/ingredient';
+import { TIngredientsActionCreators } from '../actionCreators/ingredients';
+import { TOrderActionCreators } from '../actionCreators/order';
 
-const initialState = {
-  list: null,
+const initialState: IIngredients = {
+  list: [],
   loading: false,
   hasError: false,
   selectedIngredients: [],
 };
 
-function ingredientsReducer(state = initialState, action) {
-  switch(action.type) {
+function ingredientsReducer(state = initialState, action: TIngredientsActionCreators | TOrderActionCreators): IIngredients {
+  switch (action.type) {
     case actions.FETCH_INGREDIENTS_LIST:
       return { ...state, hasError: false, loading: true };
     case actions.FETCH_INGREDIENTS_LIST_SUCCESS:

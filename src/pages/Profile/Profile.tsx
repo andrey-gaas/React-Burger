@@ -2,7 +2,7 @@ import { Link, Routes, Route, useMatch, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Cookies from '../../utils/cookies';
 import AuthApi from '../../API/AuthApi';
-import actionCreators from '../../services/actionCreators/auth';
+import { authActionCreators } from '../../services/actionCreators/auth';
 
 import { Profile } from '../../components';
 import styles from './Profile.module.css';
@@ -22,7 +22,7 @@ function ProfilePage() {
       if (result.success) {
         Cookies.deleteCookie('token');
         Cookies.deleteCookie('refresh');
-        dispatch(actionCreators.logout());
+        dispatch(authActionCreators.logout());
         navigate('/login');
       }
     } catch (error) {

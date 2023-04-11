@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { getUserData } from '../selectors';
-import actionCreators from '../actionCreators/auth';
+import { authActionCreators } from '../actionCreators/auth';
 import Cookies from '../../utils/cookies';
 import fetchUserData from '../thunks/fetchUserData';
 
@@ -24,7 +24,7 @@ function useAuth(): IUseAuthResult {
     if (refreshToken && !user) {
       dispatch(fetchUserData());
     } else {
-      dispatch(actionCreators.cancelFetchUserData());
+      dispatch(authActionCreators.cancelFetchUserData());
     }
   }, [dispatch, refreshToken, user]);
 

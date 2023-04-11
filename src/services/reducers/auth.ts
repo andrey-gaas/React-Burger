@@ -1,6 +1,8 @@
 import * as actions from '../actions/auth';
+import { IAuth } from '../../types/auth';
+import { TAuthActionCreators } from '../actionCreators/auth';
 
-const initialState = {
+const initialState: IAuth = {
   user: null,
   loading: {
     registration: false,
@@ -16,8 +18,8 @@ const initialState = {
   },
 };
 
-function orderReducer(state = initialState, action) {
-  switch(action.type) {
+function orderReducer(state = initialState, action: TAuthActionCreators): IAuth {
+  switch (action.type) {
     // REGISTRATION
     case actions.FETCH_REGISTRATION:
       return {
@@ -31,7 +33,7 @@ function orderReducer(state = initialState, action) {
         loading: { ...state.loading, registration: false },
         errors: { ...state.errors, registration: true },
       };
-    
+
     // LOGIN
     case actions.FETCH_LOGIN:
       return {

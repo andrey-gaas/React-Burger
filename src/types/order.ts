@@ -1,4 +1,5 @@
 import { IIngredient } from "./ingredient";
+import { IUser } from './auth';
 
 export interface IOrder {
   success: boolean;
@@ -6,10 +7,7 @@ export interface IOrder {
   order: {
     ingredients: IIngredient[];
     _id: string;
-    owner: {
-      name: string;
-      email: string;
-    };
+    owner: IUser;
     status: string;
     number: number;
     price: number;
