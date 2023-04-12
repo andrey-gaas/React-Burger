@@ -11,6 +11,7 @@ import FeedPage from '../../pages/Feed/Feed';
 import NotFoundPage from '../../pages/NotFound/NotFound';
 
 import IngredientsDetails from '../IngredientDetails/IngredientDetails';
+import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../Modal/Modal';
 
 function Router() {
@@ -34,6 +35,7 @@ function Router() {
         <Route path='/profile/*' element={<ProtectedRoute element={<ProfilePage />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientsDetails extraClass="mt-20" />} />
         <Route path='/feed' element={<FeedPage />} />
+        <Route path='/feed/:orderId' element={<OrderDetails extraClass="mt-20" />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
       {
@@ -44,6 +46,14 @@ function Router() {
             element={
               <Modal onClose={handleModalClose} title="Детали ингредиента">
                 <IngredientsDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/feed/:orderId'
+            element={
+              <Modal onClose={handleModalClose} title="Детали заказа">
+                <OrderDetails extraClass="mt-10" />
               </Modal>
             }
           />

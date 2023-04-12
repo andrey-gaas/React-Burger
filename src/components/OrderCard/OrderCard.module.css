@@ -3,10 +3,6 @@
   border-radius: 40px;
 }
 
-.container:first-child {
-  margin-top: 0;
-}
-
 .info {
   display: flex;
   justify-content: space-between;
@@ -41,4 +37,13 @@
 
 .price-container span {
   margin-right: 10px;
+}
+
+.link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.link:first-child {
+  margin-top: 0;
 }
