@@ -1,0 +1,29 @@
+.container {
+  margin: 0 auto;
+  width: var(--container-width);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 600px 600px;
+  grid-gap: 60px;
+}
+
+.ingredients {
+  padding-right: 8px;
+  height: 75vh;
+  min-height: 500px;
+  overflow-y: auto;
+}
+
+.ingredients::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}

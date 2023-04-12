@@ -7,6 +7,7 @@ import RegistrationPage from '../../pages/Registration/Registration';
 import ForgotPasswordPage from '../../pages/ForgotPassword/ForgotPassword';
 import ResetPasswordPage from '../../pages/ResetPassword/ResetPassword';
 import ProfilePage from '../../pages/Profile/Profile';
+import FeedPage from '../../pages/Feed/Feed';
 import NotFoundPage from '../../pages/NotFound/NotFound';
 
 import IngredientsDetails from '../IngredientDetails/IngredientDetails';
@@ -21,7 +22,7 @@ function Router() {
   const handleModalClose = () => {
     navigate(-1);
   };
-  
+
   return (
     <>
       <Routes location={background || location}>
@@ -32,6 +33,7 @@ function Router() {
         <Route path='/reset-password' element={<ResetPasswordPage />} />
         <Route path='/profile/*' element={<ProtectedRoute element={<ProfilePage />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientsDetails extraClass="mt-20" />} />
+        <Route path='/feed' element={<FeedPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
       {
