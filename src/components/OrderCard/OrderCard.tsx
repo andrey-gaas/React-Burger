@@ -4,16 +4,18 @@ import styles from './OrderCard.module.css';
 
 interface IOrderCardProps {
   className?: string;
+  status?: 'Создан' | 'Готовится' | 'Выполнен';
+  link: string;
 }
 
 function OrderCard(props: IOrderCardProps) {
-  const { className } = props;
+  const { className, status, link } = props;
   const location = useLocation();
 
   return (
     <Link
       state={{ background: location }}
-      to={`/feed/123`}
+      to={link}
       className={`${styles.link} mt-4`}
     >
       <article className={`p-6 ${styles.container} ${className}`}>
@@ -22,6 +24,10 @@ function OrderCard(props: IOrderCardProps) {
           <span className="text text_type_main-default text_color_inactive">Сегодня, 16:20</span>
         </div>
         <h1 className="mt-6 text text_type_main-medium">Death Star Starship Main бургер</h1>
+        {
+          status &&
+          <p className={`mt-2 text text_type_main-default ${status === 'Выполнен' && 'text_color_success'}`}>{status}</p>
+        }
         <div className={`mt-6 ${styles['ingredient-list']}`}>
           <div className={styles.ingredient}>
             <img

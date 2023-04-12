@@ -10,7 +10,11 @@ function Feed() {
           <section className={`mt-5 ${styles.ingredients}`}>
             {
               [0, 1, 2, 3].map((item, i) => (
-                <OrderCard key={item} className={i ? 'mt-4' : ''} />
+                <OrderCard
+                  key={item}
+                  link={`/feed/${item}`}
+                  className={i ? 'mt-4' : ''}
+                />
               ))
             }
           </section>

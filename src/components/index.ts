@@ -8,3 +8,4 @@ export { default as Profile } from './Profile/Profile';
 export { default as ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
 export { default as OrderCard } from './OrderCard/OrderCard';
 export { default as FeedInfo } from './FeedInfo/FeedInfo';
+export { default as Orders } from './Orders/Orders';

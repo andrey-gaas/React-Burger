@@ -32,7 +32,9 @@ function Router() {
         <Route path='/registration' element={<RegistrationPage />} />
         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
         <Route path='/reset-password' element={<ResetPasswordPage />} />
-        <Route path='/profile/*' element={<ProtectedRoute element={<ProfilePage />} />} />
+        <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} />} />
+        <Route path='/profile/orders' element={<ProtectedRoute element={<ProfilePage />} />} />
+        <Route path='/profile/orders/:orderId' element={<ProtectedRoute element={<OrderDetails extraClass="mt-20" />} />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientsDetails extraClass="mt-20" />} />
         <Route path='/feed' element={<FeedPage />} />
         <Route path='/feed/:orderId' element={<OrderDetails extraClass="mt-20" />} />
@@ -51,6 +53,14 @@ function Router() {
           />
           <Route
             path='/feed/:orderId'
+            element={
+              <Modal onClose={handleModalClose} title="Детали заказа">
+                <OrderDetails extraClass="mt-10" />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:orderId'
             element={
               <Modal onClose={handleModalClose} title="Детали заказа">
                 <OrderDetails extraClass="mt-10" />
