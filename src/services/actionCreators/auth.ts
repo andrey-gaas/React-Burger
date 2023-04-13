@@ -6,7 +6,9 @@ type TUserResponse = {
 }
 
 interface IUserSuccessAction {
-  readonly type: typeof actions.FETCH_REGISTRATION_SUCCESS | typeof actions.FETCH_LOGIN_SUCCESS;
+  readonly type:
+  | typeof actions.FETCH_REGISTRATION_SUCCESS
+  | typeof actions.FETCH_LOGIN_SUCCESS;
   readonly data: TUserResponse;
 }
 
@@ -17,16 +19,16 @@ interface IUserUpdateSuccessAction {
 
 interface IAuthActions {
   readonly type:
-  typeof actions.FETCH_REGISTRATION |
-  typeof actions.FETCH_REGISTRATION_FAIL |
-  typeof actions.FETCH_LOGIN |
-  typeof actions.FETCH_LOGIN_FAIL |
-  typeof actions.FETCH_USER_DATA |
-  typeof actions.FETCH_USER_DATA_FAIL |
-  typeof actions.CANCEL_FETCH_USER_DATA |
-  typeof actions.FETCH_USER_UPDATE |
-  typeof actions.FETCH_USER_UPDATE_FAIL |
-  typeof actions.LOGOUT;
+  | typeof actions.FETCH_REGISTRATION
+  | typeof actions.FETCH_REGISTRATION_FAIL
+  | typeof actions.FETCH_LOGIN
+  | typeof actions.FETCH_LOGIN_FAIL
+  | typeof actions.FETCH_USER_DATA
+  | typeof actions.FETCH_USER_DATA_FAIL
+  | typeof actions.CANCEL_FETCH_USER_DATA
+  | typeof actions.FETCH_USER_UPDATE
+  | typeof actions.FETCH_USER_UPDATE_FAIL
+  | typeof actions.LOGOUT;
 }
 
 export type TAuthActionCreators = IUserSuccessAction | IUserUpdateSuccessAction | IAuthActions;

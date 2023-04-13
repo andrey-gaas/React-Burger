@@ -14,8 +14,48 @@ export interface IOrder {
   };
 }
 
+export interface IGeneralOrders {
+  success: boolean;
+  orders: Array<{
+    _id: string;
+    status: 'done';
+    name: string;
+    number: number;
+  }>;
+  total: number;
+  totalToday: number;
+}
+
+export interface IUserOrders {
+  success: boolean;
+  orders: Array<{
+    _id: string;
+    ingredients: string[];
+    status: 'done';
+    name: string;
+    number: number;
+  }>;
+  total: number;
+  totalToday: number;
+}
+
 export interface IOrderData {
   createdOrder: null | IOrder;
-  loading: boolean;
-  hasError: boolean;
+  lists: {
+    general: null | IGeneralOrders;
+    user: null | IUserOrders;
+  };
+  connections: {
+    general: boolean;
+    user: boolean;
+  };
+  loading: {
+    create: boolean;
+    general: boolean;
+    user: boolean;
+  };
+  errors: {
+    create: boolean;
+    connection: boolean;
+  };
 }

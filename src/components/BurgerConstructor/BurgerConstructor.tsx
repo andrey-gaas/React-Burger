@@ -65,7 +65,7 @@ function BurgerConstructor() {
         <TotalPrice
           data={convertedIngredients}
           checkout={createOrder}
-          loading={loading}
+          loading={loading.create}
         />
       </section>
       {

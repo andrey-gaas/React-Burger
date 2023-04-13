@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import Cookies from '../../utils/cookies';
 import AuthApi from '../../API/AuthApi';
 import { authActionCreators } from '../../services/actionCreators/auth';
+import { orderActionCreators } from '../../services/actionCreators/order';
 
 import { Profile, Orders } from '../../components';
 import styles from './Profile.module.css';
@@ -23,6 +24,7 @@ function ProfilePage() {
         Cookies.deleteCookie('token');
         Cookies.deleteCookie('refresh');
         dispatch(authActionCreators.logout());
+        dispatch(orderActionCreators.closeConnection('user'));
         navigate('/login');
       }
     } catch (error) {
