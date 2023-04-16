@@ -8,24 +8,35 @@ export interface IOrder {
     ingredients: IIngredient[];
     _id: string;
     owner: IUser;
-    status: string;
+    status: 'done' | 'pending' | 'created';
     number: number;
     price: number;
   };
 }
 
+export interface IWSOrderData {
+  _id: string;
+  status: 'done' | 'pending' | 'created';
+  name: string;
+  number: number;
+  createdAt: string;
+  ingredients: string[];
+}
+
 export interface IGeneralOrders {
   success: boolean;
-  orders: Array<{
-    _id: string;
-    status: 'done' | 'pending' | 'created';
-    name: string;
-    number: number;
-    createdAt: string;
-    ingredients: string[];
-  }>;
+  orders: IWSOrderData[];
   total: number;
   totalToday: number;
+}
+
+export interface IUserOrderData {
+  _id: string;
+  status: 'done' | 'pending' | 'created';
+  name: string;
+  number: number;
+  createdAt: string;
+  ingredients: string[];
 }
 
 export interface IUserOrderData {
