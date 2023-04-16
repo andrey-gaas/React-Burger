@@ -1,10 +1,11 @@
-import { Link, Routes, Route, useMatch, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Cookies from '../../utils/cookies';
 import AuthApi from '../../API/AuthApi';
-import actionCreators from '../../services/actionCreators/auth';
+import { authActionCreators } from '../../services/actionCreators/auth';
+import { orderActionCreators } from '../../services/actionCreators/order';
 
-import { Profile } from '../../components';
+import { Profile, Orders } from '../../components';
 import styles from './Profile.module.css';
 
 function ProfilePage() {
@@ -22,7 +23,8 @@ function ProfilePage() {
       if (result.success) {
         Cookies.deleteCookie('token');
         Cookies.deleteCookie('refresh');
-        dispatch(actionCreators.logout());
+        dispatch(authActionCreators.logout());
+        dispatch(orderActionCreators.closeConnection('user'));
         navigate('/login');
       }
     } catch (error) {
@@ -55,13 +57,12 @@ function ProfilePage() {
         </button>
         <section className="mt-20 text text_type_main-default text_color_inactive">
           {profileActive && <span>В этом разделе вы можете изменить свои персональные данные</span>}
-          {ordersActive && <span>Этот раздел еще не разработан</span>}
+          {ordersActive && <span>В этом разделе вы можете просмотреть свою историю заказов</span>}
         </section>
       </nav>
       <section>
-        <Routes>
-          <Route path="/" element={<Profile />} />
-        </Routes>
+        {profileActive && <Profile />}
+        {ordersActive && <Orders />}
       </section>
     </main>
   );

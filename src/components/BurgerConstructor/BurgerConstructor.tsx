@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import actionCreatorsIngredient from '../../services/actionCreators/ingredients';
-import actionCreatorsOrder from '../../services/actionCreators/order';
+import { ingredientsActionCreators } from '../../services/actionCreators/ingredients';
+import { orderActionCreators } from '../../services/actionCreators/order';
 import { getIngredients, getOrder } from '../../services/selectors';
 import fetchOrder from '../../services/thunks/fetchOrder';
 import converterIngredientsData from '../../utils/converterIngredientsData';
@@ -33,9 +33,9 @@ function BurgerConstructor() {
     accept: 'ingredient',
     drop: (ingredient: IIngredient) => {
       if (selectedIngredients.find(item => item.type === 'bun') && ingredient.type === 'bun') {
-        dispatch(actionCreatorsIngredient.removeBun());
+        dispatch(ingredientsActionCreators.removeBun());
       }
-      dispatch(actionCreatorsIngredient.addIngredient(ingredient));
+      dispatch(ingredientsActionCreators.addIngredient(ingredient));
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
@@ -55,7 +55,7 @@ function BurgerConstructor() {
   };
 
   const closeCreatedOrder = () => {
-    dispatch(actionCreatorsOrder.closeCreatedOrder());
+    dispatch(orderActionCreators.closeCreatedOrder());
   };
 
   return (
@@ -65,7 +65,7 @@ function BurgerConstructor() {
         <TotalPrice
           data={convertedIngredients}
           checkout={createOrder}
-          loading={loading}
+          loading={loading.create}
         />
       </section>
       {

@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { IIngredientWithKey } from '../../../../types/ingredient';
-import actionCreators from '../../../../services/actionCreators/ingredients';
+import { ingredientsActionCreators } from '../../../../services/actionCreators/ingredients';
 
 import Ingredient from '../Ingredient/Ingredient';
 
@@ -22,14 +22,14 @@ function List(props: IProps) {
   }
 
   const removeIngredient = (index: number) => {
-    dispatch(actionCreators.removeIngredient(index));
+    dispatch(ingredientsActionCreators.removeIngredient(index));
   };
 
   const moveIngredient = (dragIndex: number, hoverIndex: number) => {
 
     if (!dragIndex) return;
 
-    dispatch(actionCreators.moveIngredients(dragIndex, hoverIndex));
+    dispatch(ingredientsActionCreators.moveIngredients(dragIndex, hoverIndex));
   };
 
   return (

@@ -6,7 +6,7 @@ export interface IUser {
 }
 
 export interface IAuth {
-  user: IUser;
+  user: IUser | null;
   loading: {
     registration: boolean;
     login: boolean;
