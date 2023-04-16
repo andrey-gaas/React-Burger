@@ -4,7 +4,7 @@ import styles from './FeedInfo.module.css';
 interface IFeedInfoProps {
   list: {
     _id: string;
-    status: "done" | "pending";
+    status: "done" | "pending" | 'created';
     name: string;
     number: number;
     createdAt: string;

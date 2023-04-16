@@ -8,7 +8,7 @@ import { IIngredient } from '../../types/ingredient';
 
 interface IOrderCardProps {
   className?: string;
-  status?: 'Создан' | 'Готовится' | 'Выполнен';
+  status?: 'pending' | 'done' | 'created';
   link: string;
   number: number;
   name: string;
@@ -21,6 +21,7 @@ function OrderCard(props: IOrderCardProps) {
   const location = useLocation();
   const { list } = useIngredients();
   let ingredientsList: IIngredient[] = [];
+  let statusText: string = '';
 
   if (ingredients && list) {
     ingredients.forEach((ingredientItem) => {
@@ -30,6 +31,14 @@ function OrderCard(props: IOrderCardProps) {
         ingredientsList.push(ingredient);
       }
     });
+  }
+
+  if (status) {
+    switch (status) {
+      case 'done': statusText = 'Выполнен'; break;
+      case 'created': statusText = 'Создан'; break;
+      case 'pending': statusText = 'Готовится'; break;
+    }
   }
 
   const price: number = ingredientsList.reduce((value, { price }) => value + price, 0);
@@ -49,8 +58,8 @@ function OrderCard(props: IOrderCardProps) {
         </div>
         <h1 className="mt-6 text text_type_main-medium">{name}</h1>
         {
-          status &&
-          <p className={`mt-2 text text_type_main-default ${status === 'Выполнен' && 'text_color_success'}`}>{status}</p>
+          statusText &&
+          <p className={`mt-2 text text_type_main-default ${statusText === 'Выполнен' && 'text_color_success'}`}>{statusText}</p>
         }
         <div className={`mt-6 ${styles['ingredient-list']}`}>
           {
