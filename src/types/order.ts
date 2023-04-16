@@ -18,9 +18,11 @@ export interface IGeneralOrders {
   success: boolean;
   orders: Array<{
     _id: string;
-    status: 'done';
+    status: 'done' | 'pending';
     name: string;
     number: number;
+    createdAt: string;
+    ingredients: string[];
   }>;
   total: number;
   totalToday: number;
@@ -34,6 +36,7 @@ export interface IUserOrders {
     status: 'done';
     name: string;
     number: number;
+    createdAt: string;
   }>;
   total: number;
   totalToday: number;

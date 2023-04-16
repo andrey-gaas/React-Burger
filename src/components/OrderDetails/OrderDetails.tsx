@@ -11,7 +11,7 @@ function OrderDetails(props: IOrderDetailsProps) {
   return (
     <section className={`${styles.container} ${extraClass}`}>
       <p className={`text text_type_digits-default ${styles.number}`}>
-        #034533
+        #11111
       </p>
 
       <h1 className="mt-10 text text_type_main-medium">Black Hole Singularity острый бургер</h1>
